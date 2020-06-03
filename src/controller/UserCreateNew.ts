@@ -4,7 +4,6 @@ import {User} from '../entity/User';
 
 export async function userCreateNew(request: Request, response: Response) {
   const data = request.body;
-  console.log(request.body);
 
   await getManager()
     .createQueryBuilder()

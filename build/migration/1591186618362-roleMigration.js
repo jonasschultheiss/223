@@ -35,28 +35,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var typeorm_1 = require("typeorm");
-var User_1 = require("../entity/User");
-function userCreateNew(request, response) {
-    return __awaiter(this, void 0, void 0, function () {
-        var data;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    data = request.body;
-                    return [4 /*yield*/, typeorm_1.getManager()
-                            .createQueryBuilder()
-                            .insert()
-                            .into(User_1.User)
-                            .values({ username: data.username, password: data.password })
-                            .execute()];
-                case 1:
-                    _a.sent();
-                    response.send(203);
-                    return [2 /*return*/];
-            }
+var roleMigration1591186618362 = /** @class */ (function () {
+    function roleMigration1591186618362() {
+    }
+    roleMigration1591186618362.prototype.up = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/];
+            });
         });
-    });
-}
-exports.userCreateNew = userCreateNew;
-//# sourceMappingURL=UserCreateNew.js.map
+    };
+    roleMigration1591186618362.prototype.down = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/];
+            });
+        });
+    };
+    return roleMigration1591186618362;
+}());
+exports.roleMigration1591186618362 = roleMigration1591186618362;
+//# sourceMappingURL=1591186618362-roleMigration.js.map
