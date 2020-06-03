@@ -17,3 +17,12 @@
 4. install tslint with `yarn global add tslint`.
 5. clone this repo.
 6. install dependencies with `yarn`.
+
+## How to add an entity, do a new migration and sync with db
+
+```bash
+yarn typeorm entity:create -n Role
+yarn typeorm migration:create -n roleMigration
+yarn typeorm migration:run
+yarn typeorm schema:sync
+```
