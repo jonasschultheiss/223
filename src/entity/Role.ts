@@ -16,4 +16,7 @@ export class Role {
 
   @UpdateDateColumn()
   updateDate: string;
+
+  @Column()
+  name: string;
 }
