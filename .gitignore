@@ -39,6 +39,3 @@ dist/**/*
 
 # ignore yarn.lock
 yarn.lock
-ormconfig.json
-package-lock.json
-package.json

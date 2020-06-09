@@ -8,12 +8,13 @@ import {imageDelete} from "./controller/image/ImageDelete";
 import {imageGetAll} from "./controller/image/ImageGetAll";
 import {imageGetFromUser} from "./controller/image/ImageGetFromUser";
 import {imageGetOne} from "./controller/image/ImageGetOne";
+import {imageLike} from "./controller/image/ImageLike";
 
 import {commentCreateNew} from "./controller/comment/CommentCreateNew";
 import {commentDelete} from "./controller/comment/CommentDelete";
 import {commentGetAll} from "./controller/comment/CommentGetAll";
 import {commentGetFromUser} from "./controller/comment/CommentGetFromUser";
-import {imageLike} from "./controller/image/ImageLike";
+
 
 export const AppRoutes = [
   {

@@ -10,6 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
+var Image_1 = require("./Image");
+var Comment_1 = require("./Comment");
+var Role_1 = require("./Role");
+var Like_1 = require("./Like");
 var User = /** @class */ (function () {
     function User() {
     }
@@ -33,6 +37,23 @@ var User = /** @class */ (function () {
         typeorm_1.Column(),
         __metadata("design:type", String)
     ], User.prototype, "password", void 0);
+    __decorate([
+        typeorm_1.OneToOne(function (type) { return Role_1.Role; }),
+        typeorm_1.JoinColumn(),
+        __metadata("design:type", Role_1.Role)
+    ], User.prototype, "role", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function (type) { return Image_1.Image; }, function (image) { return image.user; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "images", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function (type) { return Comment_1.Comment; }, function (comment) { return comment.user; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "comments", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function (type) { return Like_1.Like; }, function (like) { return like.user; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "likes", void 0);
     User = __decorate([
         typeorm_1.Entity()
     ], User);

@@ -10,29 +10,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
-var Role = /** @class */ (function () {
-    function Role() {
+var Image_1 = require("./Image");
+var User_1 = require("./User");
+var Like = /** @class */ (function () {
+    function Like() {
     }
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
-    ], Role.prototype, "id", void 0);
+    ], Like.prototype, "id", void 0);
     __decorate([
-        typeorm_1.VersionColumn(),
-        __metadata("design:type", Number)
-    ], Role.prototype, "version", void 0);
+        typeorm_1.ManyToOne(function (type) { return Image_1.Image; }, function (image) { return image.like; }),
+        __metadata("design:type", Image_1.Image)
+    ], Like.prototype, "image", void 0);
     __decorate([
-        typeorm_1.UpdateDateColumn(),
-        __metadata("design:type", String)
-    ], Role.prototype, "updateDate", void 0);
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], Role.prototype, "name", void 0);
-    Role = __decorate([
+        typeorm_1.ManyToOne(function (type) { return User_1.User; }, function (user) { return user.likes; }),
+        __metadata("design:type", User_1.User)
+    ], Like.prototype, "user", void 0);
+    Like = __decorate([
         typeorm_1.Entity()
-    ], Role);
-    return Role;
+    ], Like);
+    return Like;
 }());
-exports.Role = Role;
-//# sourceMappingURL=Role.js.map
+exports.Like = Like;
+//# sourceMappingURL=Like.js.map

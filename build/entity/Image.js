@@ -10,29 +10,48 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
-var Role = /** @class */ (function () {
-    function Role() {
+var User_1 = require("./User");
+var Comment_1 = require("./Comment");
+var Like_1 = require("./Like");
+var Image = /** @class */ (function () {
+    function Image() {
     }
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
-    ], Role.prototype, "id", void 0);
+    ], Image.prototype, "id", void 0);
     __decorate([
         typeorm_1.VersionColumn(),
         __metadata("design:type", Number)
-    ], Role.prototype, "version", void 0);
+    ], Image.prototype, "version", void 0);
     __decorate([
         typeorm_1.UpdateDateColumn(),
         __metadata("design:type", String)
-    ], Role.prototype, "updateDate", void 0);
+    ], Image.prototype, "updateDate", void 0);
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Role.prototype, "name", void 0);
-    Role = __decorate([
+    ], Image.prototype, "title", void 0);
+    __decorate([
+        typeorm_1.Column("text"),
+        __metadata("design:type", String)
+    ], Image.prototype, "content", void 0);
+    __decorate([
+        typeorm_1.ManyToOne(function (type) { return User_1.User; }, function (user) { return user.images; }),
+        __metadata("design:type", User_1.User)
+    ], Image.prototype, "user", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function (type) { return Comment_1.Comment; }, function (comment) { return comment.image; }),
+        __metadata("design:type", Array)
+    ], Image.prototype, "comment", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function (type) { return Like_1.Like; }, function (like) { return like.image; }),
+        __metadata("design:type", Array)
+    ], Image.prototype, "like", void 0);
+    Image = __decorate([
         typeorm_1.Entity()
-    ], Role);
-    return Role;
+    ], Image);
+    return Image;
 }());
-exports.Role = Role;
-//# sourceMappingURL=Role.js.map
+exports.Image = Image;
+//# sourceMappingURL=Image.js.map

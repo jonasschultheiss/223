@@ -10,29 +10,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
-var Role = /** @class */ (function () {
-    function Role() {
+var User_1 = require("./User");
+var Image_1 = require("./Image");
+var Comment = /** @class */ (function () {
+    function Comment() {
     }
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
-    ], Role.prototype, "id", void 0);
+    ], Comment.prototype, "id", void 0);
     __decorate([
         typeorm_1.VersionColumn(),
         __metadata("design:type", Number)
-    ], Role.prototype, "version", void 0);
+    ], Comment.prototype, "version", void 0);
     __decorate([
         typeorm_1.UpdateDateColumn(),
         __metadata("design:type", String)
-    ], Role.prototype, "updateDate", void 0);
+    ], Comment.prototype, "updateDate", void 0);
     __decorate([
         typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Role.prototype, "name", void 0);
-    Role = __decorate([
+    ], Comment.prototype, "text", void 0);
+    __decorate([
+        typeorm_1.ManyToOne(function (type) { return User_1.User; }, function (user) { return user.comments; }),
+        __metadata("design:type", User_1.User)
+    ], Comment.prototype, "user", void 0);
+    __decorate([
+        typeorm_1.ManyToOne(function (type) { return Image_1.Image; }, function (image) { return image.comment; }),
+        __metadata("design:type", Image_1.Image)
+    ], Comment.prototype, "image", void 0);
+    Comment = __decorate([
         typeorm_1.Entity()
-    ], Role);
-    return Role;
+    ], Comment);
+    return Comment;
 }());
-exports.Role = Role;
-//# sourceMappingURL=Role.js.map
+exports.Comment = Comment;
+//# sourceMappingURL=Comment.js.map
