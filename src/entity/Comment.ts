@@ -1,30 +1,32 @@
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    VersionColumn,
-    UpdateDateColumn, ManyToOne, OneToMany,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  VersionColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  OneToMany,
 } from 'typeorm';
-import {User} from "./User";
-import {Image} from "./Image";
+import {User} from './User';
+import {Image} from './Image';
 
 @Entity()
 export class Comment {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @VersionColumn()
-    version: number;
+  @VersionColumn()
+  version: number;
 
-    @UpdateDateColumn()
-    updateDate: string;
+  @UpdateDateColumn()
+  updateDate: string;
 
-    @Column()
-    text: string;
+  @Column()
+  text: string;
 
-    @ManyToOne(type => User, user => user.comments)
-    user: User;
+  @ManyToOne(type => User, user => user.comments)
+  user: User;
 
-    @ManyToOne(type => Image, image => image.comment)
-    image: Image;
+  @ManyToOne(type => Image, image => image.comment)
+  image: Image;
 }

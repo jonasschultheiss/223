@@ -3,12 +3,16 @@ import {
   PrimaryGeneratedColumn,
   Column,
   VersionColumn,
-  UpdateDateColumn, OneToMany, ManyToOne, OneToOne, JoinColumn,
+  UpdateDateColumn,
+  OneToMany,
+  ManyToOne,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
-import {Image} from "./Image";
-import {Comment} from "./Comment";
-import {Role} from "./Role";
-import {Like} from "./Like";
+import {Image} from './Image';
+import {Comment} from './Comment';
+import {Role} from './Role';
+import {Like} from './Like';
 
 @Entity()
 export class User {

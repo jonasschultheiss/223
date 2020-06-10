@@ -43,7 +43,7 @@ function imageGetAll(request, response) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, typeorm_1.getRepository(Image_1.Image)
-                        .createQueryBuilder("image")
+                        .createQueryBuilder('image')
                         .getMany()];
                 case 1:
                     images = _a.sent();

@@ -36,10 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
+var bcrypt_1 = require("bcrypt");
 var User_1 = require("../../entity/User");
 function userLogin(request, response) {
     return __awaiter(this, void 0, void 0, function () {
-        var sentUser, clearPassword, databaseUser, bcrypt;
+        var sentUser, clearPassword, databaseUser;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -47,17 +48,16 @@ function userLogin(request, response) {
                     clearPassword = request.body.password;
                     return [4 /*yield*/, typeorm_1.getManager()
                             .createQueryBuilder()
-                            .select("user")
-                            .from(User_1.User, "user")
-                            .where("user.name = :name", { name: sentUser })
+                            .select('user')
+                            .from(User_1.User, 'user')
+                            .where('user.name = :name', { name: sentUser })
                             .getOne()];
                 case 1:
                     databaseUser = _a.sent();
-                    bcrypt = require("bcrypt");
                     if (databaseUser === null) {
-                        response.status(200).json({ message: "User not found" });
+                        response.status(200).json({ message: 'User not found' });
                     }
-                    if (bcrypt.compare(clearPassword, databaseUser.password)) {
+                    if (bcrypt_1.bcrypt.compare(clearPassword, databaseUser.password)) {
                         try {
                             //const hashedPassword = await bcrypt.hash(data.password, 10)
                             //await getManager()
@@ -66,14 +66,14 @@ function userLogin(request, response) {
                             // .into(User)
                             // .values({username: data.username, password: hashedPassword})
                             // .execute();
-                            response.status(203).json({ message: "Welcome, you are logged in" });
+                            response.status(203).json({ message: 'Welcome, you are logged in' });
                         }
                         catch (_b) {
-                            response.status(500).json({ message: "There are some errors" });
+                            response.status(500).json({ message: 'There are some errors' });
                         }
                     }
                     else {
-                        response.status(200).json({ message: "Username or Password wrong" });
+                        response.status(200).json({ message: 'Username or Password wrong' });
                     }
                     return [2 /*return*/];
             }

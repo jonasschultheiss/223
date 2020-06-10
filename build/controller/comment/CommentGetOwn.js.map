@@ -1,1 +1,1 @@
-{"version":3,"file":"CommentGetOwn.js","sourceRoot":"","sources":["../../../src/controller/comment/CommentGetOwn.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAIA,SAAsB,aAAa,CAAC,OAAgB,EAAE,QAAkB;;;;;;CAEvE;AAFD,sCAEC"}
+{"version":3,"file":"CommentGetOwn.js","sourceRoot":"","sources":["../../../src/controller/comment/CommentGetOwn.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAIA,SAAsB,aAAa,CAAC,OAAgB,EAAE,QAAkB;;;;CAAI;AAA5E,sCAA4E"}

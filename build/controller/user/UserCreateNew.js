@@ -36,32 +36,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
+var bcrypt_1 = require("bcrypt");
 var User_1 = require("../../entity/User");
 function userCreateNew(request, response) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, bcrypt, databaseUser, hashedPassword, _a;
+        var data, databaseUser, hashedPassword, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     data = request.body;
-                    bcrypt = require("bcrypt");
-                    console.log("data 123");
+                    console.log('data 123');
                     return [4 /*yield*/, typeorm_1.getManager()
                             .createQueryBuilder()
-                            .select("username")
-                            .from(User_1.User, "user")
-                            .where("user.username = :name", { name: data.username })
+                            .select('username')
+                            .from(User_1.User, 'user')
+                            .where('user.username = :name', { name: data.username })
                             .getOne()];
                 case 1:
                     databaseUser = _b.sent();
                     if (databaseUser !== null) {
-                        response.status(200).json({ message: "Username already taken" });
+                        response.status(200).json({ message: 'Username already taken' });
                         return [2 /*return*/];
                     }
                     _b.label = 2;
                 case 2:
                     _b.trys.push([2, 5, , 6]);
-                    return [4 /*yield*/, bcrypt.hash(data.password, 10)];
+                    return [4 /*yield*/, bcrypt_1.bcrypt.hash(data.password, 10)];
                 case 3:
                     hashedPassword = _b.sent();
                     return [4 /*yield*/, typeorm_1.getManager()
@@ -72,11 +72,11 @@ function userCreateNew(request, response) {
                             .execute()];
                 case 4:
                     _b.sent();
-                    response.status(203).json({ "message": "Login success" });
+                    response.status(203).json({ message: 'Login success' });
                     return [2 /*return*/];
                 case 5:
                     _a = _b.sent();
-                    response.status(500).json({ "message": "There was an error" });
+                    response.status(500).json({ message: 'There was an error' });
                     return [2 /*return*/];
                 case 6: return [2 /*return*/];
             }

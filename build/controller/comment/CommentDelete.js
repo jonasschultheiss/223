@@ -48,7 +48,7 @@ function commentDelete(request, response) {
                             .createQueryBuilder()
                             .delete()
                             .from(Comment_1.Comment)
-                            .where("id = :id", { id: data.commentId })
+                            .where('id = :id', { id: data.commentId })
                             .execute()];
                 case 1:
                     _a.sent();

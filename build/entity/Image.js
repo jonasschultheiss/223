@@ -33,7 +33,7 @@ var Image = /** @class */ (function () {
         __metadata("design:type", String)
     ], Image.prototype, "title", void 0);
     __decorate([
-        typeorm_1.Column("text"),
+        typeorm_1.Column('text'),
         __metadata("design:type", String)
     ], Image.prototype, "content", void 0);
     __decorate([

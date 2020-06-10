@@ -43,7 +43,7 @@ function commentGetAll(request, response) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, typeorm_1.getRepository(Comment_1.Comment)
-                        .createQueryBuilder("comment")
+                        .createQueryBuilder('comment')
                         .getMany()];
                 case 1:
                     comments = _a.sent();

@@ -1,7 +1,8 @@
 import {Request, Response} from 'express';
 import {getManager} from 'typeorm';
-import {Comment} from "../../entity/Comment";
+import {Comment} from '../../entity/Comment';
 
-export async function commentGetFromUser(request: Request, response: Response){
-
-}
+export async function commentGetFromUser(
+  request: Request,
+  response: Response
+) {}
