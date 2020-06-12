@@ -2,7 +2,6 @@ import {userCreateNew} from './controller/user/UserCreateNew';
 import {userGetAll} from './controller/user/UserGetAll';
 import {userDelete} from './controller/user/UserDelete';
 import {userGetOne} from './controller/user/UserGetOne';
-import {userTest} from './controller/user/UserTest';
 
 import {imageCreateNew} from './controller/image/ImageCreateNew';
 import {imageDelete} from './controller/image/ImageDelete';
@@ -17,11 +16,6 @@ import {commentGetAll} from './controller/comment/CommentGetAll';
 import {commentGetFromUser} from './controller/comment/CommentGetFromUser';
 
 export const AppRoutes = [
-  {
-    path: '/test',
-    method: 'post',
-    action: userTest,
-  },
   {
     path: '/user',
     method: 'post',
