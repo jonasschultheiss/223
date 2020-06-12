@@ -4,7 +4,7 @@ import {Image} from "../../entity/Image";
 
 export async function imageGetAll(request: Request, response: Response){
     const images = await getRepository(Image)
-        .createQueryBuilder("image")
-        .getMany();
+      .createQueryBuilder('image')
+      .getMany();
     response.set(images).status(200);
 }
