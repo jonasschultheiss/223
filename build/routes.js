@@ -16,6 +16,8 @@ var CommentCreateNew_1 = require("./controller/comment/CommentCreateNew");
 var CommentDelete_1 = require("./controller/comment/CommentDelete");
 var CommentGetAll_1 = require("./controller/comment/CommentGetAll");
 var CommentGetFromUser_1 = require("./controller/comment/CommentGetFromUser");
+var UserGetRole_1 = require("./controller/auth/UserGetRole");
+var UserSetRole_1 = require("./controller/auth/UserSetRole");
 exports.AppRoutes = [
     {
         path: '/user',
@@ -36,6 +38,16 @@ exports.AppRoutes = [
         path: '/user',
         method: 'delete',
         action: UserDelete_1.userDelete,
+    },
+    {
+        path: '/user/role/:id',
+        method: 'get',
+        action: UserGetRole_1.userGetRole,
+    },
+    {
+        path: '/user/role/:id',
+        method: 'set',
+        action: UserSetRole_1.userSetRole,
     },
     {
         path: '/user/profilepicture/:id',
