@@ -17,6 +17,8 @@ import {commentCreateNew} from './controller/comment/CommentCreateNew';
 import {commentDelete} from './controller/comment/CommentDelete';
 import {commentGetAll} from './controller/comment/CommentGetAll';
 import {commentGetFromUser} from './controller/comment/CommentGetFromUser';
+import {userGetRole} from './controller/auth/UserGetRole';
+import {userSetRole} from './controller/auth/UserSetRole';
 
 export const AppRoutes = [
   {
@@ -38,6 +40,16 @@ export const AppRoutes = [
     path: '/user',
     method: 'delete',
     action: userDelete,
+  },
+  {
+    path: '/user/role/:id',
+    method: 'get',
+    action: userGetRole,
+  },
+  {
+    path: '/user/role/:id',
+    method: 'set',
+    action: userSetRole,
   },
   {
     path: '/user/profilepicture/:id',
