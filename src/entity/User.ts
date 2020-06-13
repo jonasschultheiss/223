@@ -3,12 +3,15 @@ import {
   PrimaryGeneratedColumn,
   Column,
   VersionColumn,
-  UpdateDateColumn, OneToMany, OneToOne, JoinColumn,
+  UpdateDateColumn,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
-import {Image} from "./Image";
-import {Comment} from "./Comment";
-import {Role} from "./Role";
-import {Like} from "./Like";
+import {Image} from './Image';
+import {Comment} from './Comment';
+import {Role} from './Role';
+import {Like} from './Like';
 
 @Entity()
 export class User {
@@ -26,6 +29,10 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToOne(type => User)
+  @JoinColumn()
+  user: User;
 
   @OneToOne(type => Role)
   @JoinColumn()

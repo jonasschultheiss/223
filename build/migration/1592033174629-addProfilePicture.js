@@ -34,38 +34,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-require("reflect-metadata");
-var typeorm_1 = require("typeorm");
-var express = require("express");
-var bodyParser = require("body-parser");
-var routes_1 = require("./routes");
-var dotenv = require("dotenv");
-dotenv.config();
-// create connection with database
-// note that it's not active database connection
-// TypeORM creates connection pools and uses them for your requests
-typeorm_1.createConnection()
-    .then(function (connection) { return __awaiter(_this, void 0, void 0, function () {
-    var app, port;
-    return __generator(this, function (_a) {
-        app = express();
-        app.use(bodyParser.json());
-        // register all application routes
-        routes_1.AppRoutes.forEach(function (route) {
-            app[route.method](route.path, function (request, response, next) {
-                route
-                    .action(request, response)
-                    .then(function () { return next; })
-                    .catch(function (err) { return next(err); });
+var addProfilePicture1592033174629 = /** @class */ (function () {
+    function addProfilePicture1592033174629() {
+    }
+    addProfilePicture1592033174629.prototype.up = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/];
             });
         });
-        port = process.env.PORT || 3000;
-        app.listen(port);
-        console.log("Express application is up and running on port " + port);
-        return [2 /*return*/];
-    });
-}); })
-    .catch(function (error) { return console.log('TypeORM connection error: ', error); });
-//# sourceMappingURL=index.js.map
+    };
+    addProfilePicture1592033174629.prototype.down = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/];
+            });
+        });
+    };
+    return addProfilePicture1592033174629;
+}());
+exports.addProfilePicture1592033174629 = addProfilePicture1592033174629;
+//# sourceMappingURL=1592033174629-addProfilePicture.js.map

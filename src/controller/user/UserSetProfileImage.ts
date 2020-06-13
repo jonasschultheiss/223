@@ -1,10 +1,16 @@
-import { Request, Response } from 'express';
+import { Request, Response, query } from 'express';
+import { getManager } from 'typeorm';
 import { getConnection } from 'typeorm';
 import { User } from '../../entity/User';
-export async function userTest(request: Request, response: Response) {
-  const user = new User();
-  user.username = request.body.username;
-  user.password = request.body.password;
+import { Profilepicture } from '../../entity/Profilepicture';
+import { CLIENT_RENEG_LIMIT } from 'tls';
+export async function userSetProfileImage(
+  request: Request,
+  response: Response
+) {
+  const profilePicture = new Profilepicture();
+  profilePicture.content = request.body.content;
+  profilePicture.user = request.body.user;
 
   const connection = getConnection();
   const queryRunner = connection.createQueryRunner();
@@ -17,7 +23,7 @@ export async function userTest(request: Request, response: Response) {
 
   try {
     // execute some operations on this transaction:
-    await queryRunner.manager.save(user);
+    await queryRunner.manager.save(profilePicture);
 
     // commit transaction now:
     await queryRunner.commitTransaction();

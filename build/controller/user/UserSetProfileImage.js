@@ -36,52 +36,63 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
-var User_1 = require("../../entity/User");
-var bcrypt_1 = require("bcrypt");
-function userCreateNew(request, response) {
+var Profilepicture_1 = require("../../entity/Profilepicture");
+function userSetProfileImage(request, response) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, databaseUser, hashedPassword, _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var profilePicture, connection, queryRunner, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    data = request.body;
-                    console.log(data);
-                    return [4 /*yield*/, typeorm_1.getManager()
-                            .createQueryBuilder()
-                            .select('username')
-                            .from(User_1.User, 'user')
-                            .where('user.username = :name', { name: data.username })
-                            .getOne()];
+                    profilePicture = new Profilepicture_1.Profilepicture();
+                    profilePicture.content = request.body.content;
+                    profilePicture.user = request.body.user;
+                    connection = typeorm_1.getConnection();
+                    queryRunner = connection.createQueryRunner();
+                    // establish real database connection using our new query runner
+                    return [4 /*yield*/, queryRunner.connect()];
                 case 1:
-                    databaseUser = _b.sent();
-                    if (databaseUser !== null) {
-                        response.status(200).json({ message: 'Username already taken' });
-                        return [2 /*return*/];
-                    }
-                    _b.label = 2;
+                    // establish real database connection using our new query runner
+                    _a.sent();
+                    // lets now open a new transaction:
+                    return [4 /*yield*/, queryRunner.startTransaction()];
                 case 2:
-                    _b.trys.push([2, 5, , 6]);
-                    return [4 /*yield*/, bcrypt_1.bcrypt.hash(data.password, 10)];
+                    // lets now open a new transaction:
+                    _a.sent();
+                    _a.label = 3;
                 case 3:
-                    hashedPassword = _b.sent();
-                    return [4 /*yield*/, typeorm_1.getManager()
-                            .createQueryBuilder()
-                            .insert()
-                            .into(User_1.User)
-                            .values({ username: data.username, password: hashedPassword })
-                            .execute()];
+                    _a.trys.push([3, 6, 8, 10]);
+                    // execute some operations on this transaction:
+                    return [4 /*yield*/, queryRunner.manager.save(profilePicture)];
                 case 4:
-                    _b.sent();
-                    response.status(203).json({ message: 'Login success' });
-                    return [2 /*return*/];
+                    // execute some operations on this transaction:
+                    _a.sent();
+                    // commit transaction now:
+                    return [4 /*yield*/, queryRunner.commitTransaction()];
                 case 5:
-                    _a = _b.sent();
-                    response.status(500).json({ message: 'There was an error' });
+                    // commit transaction now:
+                    _a.sent();
+                    return [3 /*break*/, 10];
+                case 6:
+                    err_1 = _a.sent();
+                    // since we have errors let's rollback changes we made
+                    return [4 /*yield*/, queryRunner.rollbackTransaction()];
+                case 7:
+                    // since we have errors let's rollback changes we made
+                    _a.sent();
+                    return [3 /*break*/, 10];
+                case 8: 
+                // you need to release query runner which is manually created:
+                return [4 /*yield*/, queryRunner.release()];
+                case 9:
+                    // you need to release query runner which is manually created:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 10:
+                    response.status(200).send();
                     return [2 /*return*/];
-                case 6: return [2 /*return*/];
             }
         });
     });
 }
-exports.userCreateNew = userCreateNew;
-//# sourceMappingURL=UserCreateNew.js.map
+exports.userSetProfileImage = userSetProfileImage;
+//# sourceMappingURL=UserSetProfileImage.js.map

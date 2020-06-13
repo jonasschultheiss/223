@@ -34,38 +34,53 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-require("reflect-metadata");
 var typeorm_1 = require("typeorm");
-var express = require("express");
-var bodyParser = require("body-parser");
-var routes_1 = require("./routes");
-var dotenv = require("dotenv");
-dotenv.config();
-// create connection with database
-// note that it's not active database connection
-// TypeORM creates connection pools and uses them for your requests
-typeorm_1.createConnection()
-    .then(function (connection) { return __awaiter(_this, void 0, void 0, function () {
-    var app, port;
-    return __generator(this, function (_a) {
-        app = express();
-        app.use(bodyParser.json());
-        // register all application routes
-        routes_1.AppRoutes.forEach(function (route) {
-            app[route.method](route.path, function (request, response, next) {
-                route
-                    .action(request, response)
-                    .then(function () { return next; })
-                    .catch(function (err) { return next(err); });
-            });
+var Profilepicture_1 = require("../../entity/Profilepicture");
+function userGetProfileImage(request, response) {
+    return __awaiter(this, void 0, void 0, function () {
+        var connection, queryRunner, profileImage, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    connection = typeorm_1.getConnection();
+                    queryRunner = connection.createQueryRunner();
+                    profileImage = null;
+                    // establish real database connection using our new query runner
+                    return [4 /*yield*/, queryRunner.connect()];
+                case 1:
+                    // establish real database connection using our new query runner
+                    _a.sent();
+                    _a.label = 2;
+                case 2:
+                    _a.trys.push([2, 4, 6, 8]);
+                    return [4 /*yield*/, queryRunner.manager.find(Profilepicture_1.Profilepicture, {
+                            where: { user: request.params.id }
+                        })];
+                case 3:
+                    profileImage = _a.sent();
+                    return [3 /*break*/, 8];
+                case 4:
+                    err_1 = _a.sent();
+                    // since we have errors let's rollback changes we made
+                    return [4 /*yield*/, queryRunner.rollbackTransaction()];
+                case 5:
+                    // since we have errors let's rollback changes we made
+                    _a.sent();
+                    return [3 /*break*/, 8];
+                case 6: 
+                // you need to release query runner which is manually created:
+                return [4 /*yield*/, queryRunner.release()];
+                case 7:
+                    // you need to release query runner which is manually created:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 8:
+                    response.status(200).json(profileImage);
+                    return [2 /*return*/];
+            }
         });
-        port = process.env.PORT || 3000;
-        app.listen(port);
-        console.log("Express application is up and running on port " + port);
-        return [2 /*return*/];
     });
-}); })
-    .catch(function (error) { return console.log('TypeORM connection error: ', error); });
-//# sourceMappingURL=index.js.map
+}
+exports.userGetProfileImage = userGetProfileImage;
+//# sourceMappingURL=UserGetProfileImage.js.map

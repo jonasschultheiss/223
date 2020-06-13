@@ -3,6 +3,9 @@ import {userGetAll} from './controller/user/UserGetAll';
 import {userDelete} from './controller/user/UserDelete';
 import {userGetOne} from './controller/user/UserGetOne';
 
+import {userGetProfileImage} from './controller/user/UserGetProfileImage';
+import {userSetProfileImage} from './controller/user/UserSetProfileImage';
+
 import {imageCreateNew} from './controller/image/ImageCreateNew';
 import {imageDelete} from './controller/image/ImageDelete';
 import {imageGetAll} from './controller/image/ImageGetAll';
@@ -36,7 +39,16 @@ export const AppRoutes = [
     method: 'delete',
     action: userDelete,
   },
-
+  {
+    path: '/user/profilepicture/:id',
+    method: 'get',
+    action: userGetProfileImage,
+  },
+  {
+    path: '/user/profilepicture',
+    method: 'post',
+    action: userSetProfileImage,
+  },
   {
     path: '/image',
     method: 'get',
@@ -57,6 +69,7 @@ export const AppRoutes = [
     method: 'post',
     action: imageLike,
   },
+
   {
     path: '/image/username',
     method: 'post',

@@ -1,26 +1,23 @@
 import { Request, Response } from 'express';
-import { getConnection } from 'typeorm';
+import { getManager, getConnection } from 'typeorm';
 import { User } from '../../entity/User';
-export async function userTest(request: Request, response: Response) {
-  const user = new User();
-  user.username = request.body.username;
-  user.password = request.body.password;
-
+import { Profilepicture } from '../../entity/Profilepicture';
+export async function userGetProfileImage(
+  request: Request,
+  response: Response
+) {
+  // get a connection and create a new query runner
   const connection = getConnection();
   const queryRunner = connection.createQueryRunner();
+  let profileImage = null;
 
   // establish real database connection using our new query runner
   await queryRunner.connect();
 
-  // lets now open a new transaction:
-  await queryRunner.startTransaction();
-
   try {
-    // execute some operations on this transaction:
-    await queryRunner.manager.save(user);
-
-    // commit transaction now:
-    await queryRunner.commitTransaction();
+    profileImage = await queryRunner.manager.find(Profilepicture, {
+      where: { user: request.params.id }
+    });
   } catch (err) {
     // since we have errors let's rollback changes we made
     await queryRunner.rollbackTransaction();
@@ -28,5 +25,6 @@ export async function userTest(request: Request, response: Response) {
     // you need to release query runner which is manually created:
     await queryRunner.release();
   }
-  response.status(200).send();
+
+  response.status(200).json(profileImage);
 }

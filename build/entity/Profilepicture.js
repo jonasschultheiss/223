@@ -10,27 +10,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
-var Image_1 = require("./Image");
-var User_1 = require("./User");
-var Like = /** @class */ (function () {
-    function Like() {
+var Profilepicture = /** @class */ (function () {
+    function Profilepicture() {
     }
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
-    ], Like.prototype, "id", void 0);
+    ], Profilepicture.prototype, "id", void 0);
     __decorate([
-        typeorm_1.ManyToOne(function (type) { return Image_1.Image; }, function (image) { return image.like; }),
-        __metadata("design:type", Image_1.Image)
-    ], Like.prototype, "image", void 0);
+        typeorm_1.VersionColumn(),
+        __metadata("design:type", Number)
+    ], Profilepicture.prototype, "version", void 0);
     __decorate([
-        typeorm_1.ManyToOne(function (type) { return User_1.User; }, function (user) { return user.likes; }),
-        __metadata("design:type", User_1.User)
-    ], Like.prototype, "user", void 0);
-    Like = __decorate([
+        typeorm_1.UpdateDateColumn(),
+        __metadata("design:type", String)
+    ], Profilepicture.prototype, "updateDate", void 0);
+    __decorate([
+        typeorm_1.Column('text'),
+        __metadata("design:type", String)
+    ], Profilepicture.prototype, "content", void 0);
+    __decorate([
+        typeorm_1.Column(),
+        __metadata("design:type", Number)
+    ], Profilepicture.prototype, "user", void 0);
+    Profilepicture = __decorate([
         typeorm_1.Entity()
-    ], Like);
-    return Like;
+    ], Profilepicture);
+    return Profilepicture;
 }());
-exports.Like = Like;
-//# sourceMappingURL=Like.js.map
+exports.Profilepicture = Profilepicture;
+//# sourceMappingURL=Profilepicture.js.map
