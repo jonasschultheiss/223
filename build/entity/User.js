@@ -14,11 +14,10 @@ var Image_1 = require("./Image");
 var Comment_1 = require("./Comment");
 var Role_1 = require("./Role");
 var Like_1 = require("./Like");
+var Profilepicture_1 = require("./Profilepicture");
 var User = /** @class */ (function () {
     function User() {
     }
-    User_1 = User;
-    var User_1;
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
@@ -40,13 +39,11 @@ var User = /** @class */ (function () {
         __metadata("design:type", String)
     ], User.prototype, "password", void 0);
     __decorate([
-        typeorm_1.OneToOne(function (type) { return User_1; }),
-        typeorm_1.JoinColumn(),
-        __metadata("design:type", User)
-    ], User.prototype, "user", void 0);
+        typeorm_1.OneToMany(function (type) { return Profilepicture_1.Profilepicture; }, function (profilePicture) { return profilePicture.user; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "profilePicture", void 0);
     __decorate([
-        typeorm_1.OneToOne(function (type) { return Role_1.Role; }),
-        typeorm_1.JoinColumn(),
+        typeorm_1.ManyToOne(function (type) { return Role_1.Role; }, function (role) { return role.user; }),
         __metadata("design:type", Role_1.Role)
     ], User.prototype, "role", void 0);
     __decorate([
@@ -61,7 +58,7 @@ var User = /** @class */ (function () {
         typeorm_1.OneToMany(function (type) { return Like_1.Like; }, function (like) { return like.user; }),
         __metadata("design:type", Array)
     ], User.prototype, "likes", void 0);
-    User = User_1 = __decorate([
+    User = __decorate([
         typeorm_1.Entity()
     ], User);
     return User;

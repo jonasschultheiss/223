@@ -1,40 +1,47 @@
 import {Request, Response} from 'express';
-import {getManager} from 'typeorm';
-import {bcrypt} from 'bcrypt';
-
+import {getConnection, getManager} from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
+import "dotenv"
 import {User} from '../../entity/User';
 
+
 export async function userLogin(request: Request, response: Response) {
-  //TODO: Refactor with Transaction from typeORM
-  //https://typeorm.io/#/transactions
+
   const sentUser = request.body.username;
   const clearPassword = request.body.password;
-  const databaseUser = await getManager()
-    .createQueryBuilder()
-    .select('user')
-    .from(User, 'user')
-    .where('user.name = :name', {name: sentUser})
-    .getOne();
 
-  if (databaseUser === null) {
-    response.status(200).json({message: 'User not found'});
-  }
+  const connection = getConnection();
+  const queryRunner = connection.createQueryRunner();
 
-  if (bcrypt.compare(clearPassword, databaseUser.password)) {
-    try {
-      //const hashedPassword = await bcrypt.hash(data.password, 10)
-      //await getManager()
-      // .createQueryBuilder()
-      // .insert()
-      // .into(User)
-      // .values({username: data.username, password: hashedPassword})
-      // .execute();
+  // establish real database connection using our new query runner
+  await queryRunner.connect();
 
-      response.status(203).json({message: 'Welcome, you are logged in'});
-    } catch {
-      response.status(500).json({message: 'There are some errors'});
+  const databaseUser = await queryRunner.manager.findOne(User, {where: {username: sentUser}})
+
+  if (bcrypt.compare(clearPassword, databaseUser.password)){
+    const userData = await connection
+        .getRepository(User)
+        .createQueryBuilder("user")
+        .leftJoinAndSelect("user.role", "role")
+        .where("username = :name", {name: sentUser})
+        .getOne()
+
+    const payload = {
+      userId: userData.id,
+      username: userData.username,
+      role: userData.role.name,
+      profilePicture: []
     }
-  } else {
-    response.status(200).json({message: 'Username or Password wrong'});
+
+    const token_secret = process.env.JWT_SECRET || "abcdefghijklmnopqrstuvwxyz"
+
+    const token = jwt.sign(JSON.stringify(payload),token_secret)
+
+    response.status(200).json({success: true, message:"Login success", access_token: token});
+
+  }else{
+    response.status(200).json({success: false, message:"Login failed"});
   }
+  await queryRunner.release()
 }

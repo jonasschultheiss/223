@@ -6,12 +6,13 @@ import {
   UpdateDateColumn,
   OneToMany,
   OneToOne,
-  JoinColumn,
+  JoinColumn, ManyToOne, ManyToMany, JoinTable,
 } from 'typeorm';
 import {Image} from './Image';
 import {Comment} from './Comment';
 import {Role} from './Role';
 import {Like} from './Like';
+import {Profilepicture} from "./Profilepicture";
 
 @Entity()
 export class User {
@@ -30,12 +31,10 @@ export class User {
   @Column()
   password: string;
 
-  @OneToOne(type => User)
-  @JoinColumn()
-  user: User;
+  @OneToMany(type => Profilepicture, profilePicture => profilePicture.user)
+  profilePicture: Profilepicture[];
 
-  @OneToOne(type => Role)
-  @JoinColumn()
+  @ManyToOne(type => Role, role => role.user)
   role: Role;
 
   @OneToMany(type => Image, image => image.user)

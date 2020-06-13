@@ -7,7 +7,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
-  JoinColumn
+  JoinColumn, ManyToMany
 } from 'typeorm';
 import { User } from './User';
 import { join } from 'path';
@@ -26,6 +26,6 @@ export class Profilepicture {
   @Column('text')
   content: string;
 
-  @Column()
-  user: number;
+  @ManyToOne(type => User, user => user.profilePicture)
+  user: User;
 }

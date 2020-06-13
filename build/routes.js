@@ -4,6 +4,8 @@ var UserCreateNew_1 = require("./controller/user/UserCreateNew");
 var UserGetAll_1 = require("./controller/user/UserGetAll");
 var UserDelete_1 = require("./controller/user/UserDelete");
 var UserGetOne_1 = require("./controller/user/UserGetOne");
+var UserTest_1 = require("./controller/user/UserTest");
+var UserLogin_1 = require("./controller/auth/UserLogin");
 var UserGetProfileImage_1 = require("./controller/user/UserGetProfileImage");
 var UserSetProfileImage_1 = require("./controller/user/UserSetProfileImage");
 var ImageCreateNew_1 = require("./controller/image/ImageCreateNew");
@@ -19,6 +21,15 @@ var CommentGetFromUser_1 = require("./controller/comment/CommentGetFromUser");
 var UserGetRole_1 = require("./controller/auth/UserGetRole");
 var UserSetRole_1 = require("./controller/auth/UserSetRole");
 exports.AppRoutes = [
+    {
+        path: '/login',
+        method: 'post',
+        action: UserLogin_1.userLogin,
+    }, {
+        path: '/test',
+        method: 'post',
+        action: UserTest_1.userTest,
+    },
     {
         path: '/user',
         method: 'post',

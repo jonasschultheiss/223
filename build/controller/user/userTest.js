@@ -37,59 +37,97 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var User_1 = require("../../entity/User");
+var Role_1 = require("../../entity/Role");
+require("dotenv");
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcrypt");
 function userTest(request, response) {
     return __awaiter(this, void 0, void 0, function () {
-        var user, connection, queryRunner, err_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var user, _a, connection, queryRunner, databaseUser, userRole, err_1, createdUser, payload, token_secret, token;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     user = new User_1.User();
                     user.username = request.body.username;
-                    user.password = request.body.password;
+                    _a = user;
+                    return [4 /*yield*/, bcrypt.hash(request.body.password, 10)];
+                case 1:
+                    _a.password = _b.sent();
                     connection = typeorm_1.getConnection();
                     queryRunner = connection.createQueryRunner();
                     // establish real database connection using our new query runner
                     return [4 /*yield*/, queryRunner.connect()];
-                case 1:
+                case 2:
                     // establish real database connection using our new query runner
-                    _a.sent();
+                    _b.sent();
+                    return [4 /*yield*/, queryRunner.manager.find(User_1.User, { where: { username: user.username } })];
+                case 3:
+                    databaseUser = _b.sent();
+                    return [4 /*yield*/, queryRunner.manager.find(Role_1.Role, { where: { id: 1 } })];
+                case 4:
+                    userRole = _b.sent();
+                    user.role = userRole.find(function (role) {
+                        return role.id === 1;
+                    });
+                    //const defaultProfilePicture = await queryRunner.manager.find(Profilepicture, {where:{id:1}})
+                    //user.profilePicture = defaultProfilePicture
+                    //console.log(user)
                     // lets now open a new transaction:
                     return [4 /*yield*/, queryRunner.startTransaction()];
-                case 2:
+                case 5:
+                    //const defaultProfilePicture = await queryRunner.manager.find(Profilepicture, {where:{id:1}})
+                    //user.profilePicture = defaultProfilePicture
+                    //console.log(user)
                     // lets now open a new transaction:
-                    _a.sent();
-                    _a.label = 3;
-                case 3:
-                    _a.trys.push([3, 6, 8, 10]);
+                    _b.sent();
+                    if (!(Object.keys(databaseUser).length !== 0)) return [3 /*break*/, 6];
+                    response.status(500).send("Username taken");
+                    return [2 /*return*/];
+                case 6:
+                    _b.trys.push([6, 9, , 11]);
                     // execute some operations on this transaction:
                     return [4 /*yield*/, queryRunner.manager.save(user)];
-                case 4:
+                case 7:
                     // execute some operations on this transaction:
-                    _a.sent();
+                    _b.sent();
                     // commit transaction now:
                     return [4 /*yield*/, queryRunner.commitTransaction()];
-                case 5:
+                case 8:
                     // commit transaction now:
-                    _a.sent();
-                    return [3 /*break*/, 10];
-                case 6:
-                    err_1 = _a.sent();
+                    _b.sent();
+                    return [3 /*break*/, 11];
+                case 9:
+                    err_1 = _b.sent();
                     // since we have errors let's rollback changes we made
                     return [4 /*yield*/, queryRunner.rollbackTransaction()];
-                case 7:
-                    // since we have errors let's rollback changes we made
-                    _a.sent();
-                    return [3 /*break*/, 10];
-                case 8: 
-                // you need to release query runner which is manually created:
-                return [4 /*yield*/, queryRunner.release()];
-                case 9:
-                    // you need to release query runner which is manually created:
-                    _a.sent();
-                    return [7 /*endfinally*/];
                 case 10:
-                    response.status(200).send();
+                    // since we have errors let's rollback changes we made
+                    _b.sent();
+                    response.status(500).send();
                     return [2 /*return*/];
+                case 11: return [4 /*yield*/, queryRunner.manager.findOne(User_1.User, { where: { username: user.username } })];
+                case 12:
+                    createdUser = _b.sent();
+                    createdUser.role = userRole.find(function (role) {
+                        return role.id === 1;
+                    });
+                    createdUser.profilePicture = null;
+                    payload = {
+                        userId: createdUser.id,
+                        username: createdUser.username,
+                        role: createdUser.role.name,
+                        profilePicture: []
+                    };
+                    token_secret = process.env.JWT_SECRET || "abcdefghijklmnopqrstuvwxyz";
+                    token = jwt.sign(JSON.stringify(payload), token_secret);
+                    response.status(200).json({ message: "new account created", access_token: token });
+                    // you need to release query runner which is manually created:
+                    return [4 /*yield*/, queryRunner.release()];
+                case 13:
+                    // you need to release query runner which is manually created:
+                    _b.sent();
+                    _b.label = 14;
+                case 14: return [2 /*return*/];
             }
         });
     });

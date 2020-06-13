@@ -36,45 +36,53 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
-var bcrypt_1 = require("bcrypt");
+var bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
+require("dotenv");
 var User_1 = require("../../entity/User");
 function userLogin(request, response) {
     return __awaiter(this, void 0, void 0, function () {
-        var sentUser, clearPassword, databaseUser;
+        var sentUser, clearPassword, connection, queryRunner, databaseUser, userData, payload, token_secret, token;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     sentUser = request.body.username;
                     clearPassword = request.body.password;
-                    return [4 /*yield*/, typeorm_1.getManager()
-                            .createQueryBuilder()
-                            .select('user')
-                            .from(User_1.User, 'user')
-                            .where('user.name = :name', { name: sentUser })
-                            .getOne()];
+                    connection = typeorm_1.getConnection();
+                    queryRunner = connection.createQueryRunner();
+                    // establish real database connection using our new query runner
+                    return [4 /*yield*/, queryRunner.connect()];
                 case 1:
+                    // establish real database connection using our new query runner
+                    _a.sent();
+                    return [4 /*yield*/, queryRunner.manager.findOne(User_1.User, { where: { username: sentUser } })];
+                case 2:
                     databaseUser = _a.sent();
-                    if (databaseUser === null) {
-                        response.status(200).json({ message: 'User not found' });
-                    }
-                    if (bcrypt_1.bcrypt.compare(clearPassword, databaseUser.password)) {
-                        try {
-                            //const hashedPassword = await bcrypt.hash(data.password, 10)
-                            //await getManager()
-                            // .createQueryBuilder()
-                            // .insert()
-                            // .into(User)
-                            // .values({username: data.username, password: hashedPassword})
-                            // .execute();
-                            response.status(203).json({ message: 'Welcome, you are logged in' });
-                        }
-                        catch (_b) {
-                            response.status(500).json({ message: 'There are some errors' });
-                        }
-                    }
-                    else {
-                        response.status(200).json({ message: 'Username or Password wrong' });
-                    }
+                    if (!bcrypt.compare(clearPassword, databaseUser.password)) return [3 /*break*/, 4];
+                    return [4 /*yield*/, connection
+                            .getRepository(User_1.User)
+                            .createQueryBuilder("user")
+                            .leftJoinAndSelect("user.role", "role")
+                            .where("username = :name", { name: sentUser })
+                            .getOne()];
+                case 3:
+                    userData = _a.sent();
+                    payload = {
+                        userId: userData.id,
+                        username: userData.username,
+                        role: userData.role.name,
+                        profilePicture: []
+                    };
+                    token_secret = process.env.JWT_SECRET || "abcdefghijklmnopqrstuvwxyz";
+                    token = jwt.sign(JSON.stringify(payload), token_secret);
+                    response.status(200).json({ success: true, message: "Login success", access_token: token });
+                    return [3 /*break*/, 5];
+                case 4:
+                    response.status(200).json({ success: false, message: "Login failed" });
+                    _a.label = 5;
+                case 5: return [4 /*yield*/, queryRunner.release()];
+                case 6:
+                    _a.sent();
                     return [2 /*return*/];
             }
         });

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
+var User_1 = require("./User");
 var Profilepicture = /** @class */ (function () {
     function Profilepicture() {
     }
@@ -30,8 +31,8 @@ var Profilepicture = /** @class */ (function () {
         __metadata("design:type", String)
     ], Profilepicture.prototype, "content", void 0);
     __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", Number)
+        typeorm_1.ManyToOne(function (type) { return User_1.User; }, function (user) { return user.profilePicture; }),
+        __metadata("design:type", User_1.User)
     ], Profilepicture.prototype, "user", void 0);
     Profilepicture = __decorate([
         typeorm_1.Entity()
