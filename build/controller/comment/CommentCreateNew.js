@@ -45,9 +45,10 @@ function commentCreateNew(request, response) {
             switch (_a.label) {
                 case 0:
                     data = request.body;
+                    console.log(request.headers);
                     if (!request.headers.authorization) return [3 /*break*/, 2];
                     authHeader = request.headers.authorization;
-                    token = JSON.parse(authHeader).split(" ")[1];
+                    token = JSON.stringify(authHeader).split(' ')[1];
                     sentData = jwt.decode(token);
                     return [4 /*yield*/, typeorm_1.getManager()
                             .createQueryBuilder()
@@ -60,7 +61,7 @@ function commentCreateNew(request, response) {
                     response.status(203).json({ test: 'test' });
                     return [3 /*break*/, 3];
                 case 2:
-                    response.status(401).json({ message: "no auth token in header" });
+                    response.status(401).json({ message: 'no auth token in header' });
                     _a.label = 3;
                 case 3: return [2 /*return*/];
             }

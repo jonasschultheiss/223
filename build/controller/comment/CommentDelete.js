@@ -37,22 +37,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var Comment_1 = require("../../entity/Comment");
+var jwt = require("jsonwebtoken");
 function commentDelete(request, response) {
     return __awaiter(this, void 0, void 0, function () {
-        var data;
+        var authHeader, token, sentData, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    if (!request.headers.authorization) return [3 /*break*/, 3];
+                    authHeader = request.headers.authorization;
+                    token = JSON.parse(authHeader).split(' ')[1];
+                    sentData = jwt.decode(token);
+                    if (!(sentData.userId = request.body.userId)) return [3 /*break*/, 2];
                     data = request.body;
                     return [4 /*yield*/, typeorm_1.getConnection()
                             .createQueryBuilder()
                             .delete()
                             .from(Comment_1.Comment)
-                            .where('id = :id', { id: data.commentId })
+                            .where('user = :id', { id: sentData.userId })
                             .execute()];
                 case 1:
                     _a.sent();
-                    return [2 /*return*/];
+                    response.status(200).json({ message: 'comment successfully deleted' });
+                    _a.label = 2;
+                case 2: return [3 /*break*/, 4];
+                case 3:
+                    response.status(401).json({ message: 'no auth token in header' });
+                    _a.label = 4;
+                case 4: return [2 /*return*/];
             }
         });
     });

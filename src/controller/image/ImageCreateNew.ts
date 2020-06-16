@@ -3,7 +3,7 @@ import {getManager} from 'typeorm';
 import {Image} from '../../entity/Image';
 import * as jwt from 'jsonwebtoken';
 
-export async function commentCreateNew(request: Request, response: Response) {
+export async function imageCreateNew(request: Request, response: Response) {
   const data = request.body;
 
   if (request.headers.authorization) {

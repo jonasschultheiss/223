@@ -60,7 +60,9 @@ function userCreateNew(request, response) {
                 case 2:
                     // establish real database connection using our new query runner
                     _b.sent();
-                    return [4 /*yield*/, queryRunner.manager.find(User_1.User, { where: { username: user.username } })];
+                    return [4 /*yield*/, queryRunner.manager.find(User_1.User, {
+                            where: { username: user.username },
+                        })];
                 case 3:
                     databaseUser = _b.sent();
                     return [4 /*yield*/, queryRunner.manager.find(Role_1.Role, { where: { id: 1 } })];
@@ -81,7 +83,7 @@ function userCreateNew(request, response) {
                     // lets now open a new transaction:
                     _b.sent();
                     if (!(Object.keys(databaseUser).length !== 0)) return [3 /*break*/, 6];
-                    response.status(500).send("Username taken");
+                    response.status(500).send('Username taken');
                     return [2 /*return*/];
                 case 6:
                     _b.trys.push([6, 9, , 11]);
@@ -105,7 +107,9 @@ function userCreateNew(request, response) {
                     _b.sent();
                     response.status(500).send();
                     return [2 /*return*/];
-                case 11: return [4 /*yield*/, queryRunner.manager.findOne(User_1.User, { where: { username: user.username } })];
+                case 11: return [4 /*yield*/, queryRunner.manager.findOne(User_1.User, {
+                        where: { username: user.username },
+                    })];
                 case 12:
                     createdUser = _b.sent();
                     createdUser.role = userRole.find(function (role) {
@@ -116,16 +120,19 @@ function userCreateNew(request, response) {
                         userId: createdUser.id,
                         username: createdUser.username,
                         role: createdUser.role.name,
-                        profilePicture: []
+                        profilePicture: [],
                     };
-                    token_secret = process.env.JWT_SECRET || "abcdefghijklmnopqrstuvwxyz";
+                    token_secret = process.env.JWT_SECRET || 'abcdefghijklmnopqrstuvwxyz';
                     token = jwt.sign(JSON.stringify(payload), token_secret);
-                    response.status(200).json({ message: "new account created", access_token: token });
+                    response
+                        .status(200)
+                        .json({ message: 'new account created', access_token: token });
                     // you need to release query runner which is manually created:
                     return [4 /*yield*/, queryRunner.release()];
                 case 13:
                     // you need to release query runner which is manually created:
                     _b.sent();
+                    console.log(jwt.decode(token));
                     _b.label = 14;
                 case 14: return [2 /*return*/];
             }
