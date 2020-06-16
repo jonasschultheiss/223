@@ -1,15 +1,29 @@
 import {Request, Response} from 'express';
 import {getManager} from 'typeorm';
 import {Image} from '../../entity/Image';
+import * as jwt from 'jsonwebtoken';
 
-export async function imageCreateNew(request: Request, response: Response) {
+export async function commentCreateNew(request: Request, response: Response) {
   const data = request.body;
-  await getManager()
-    .createQueryBuilder()
-    .insert()
-    .into(Image)
-    .values({title: data.title, content: data.content, user: data.userID})
-    .execute();
 
-  response.send(203);
+  if (request.headers.authorization) {
+    const authHeader = request.headers.authorization;
+    const token = JSON.parse(authHeader).split(' ')[1];
+
+    const sentData = jwt.decode(token);
+    await getManager()
+      .createQueryBuilder()
+      .insert()
+      .into(Image)
+      .values({
+        title: data.text,
+        content: data.imageText,
+        user: sentData.userId,
+      })
+      .execute();
+
+    response.status(203).json({test: 'test'});
+  } else {
+    response.status(401).json({message: 'no auth token in header'});
+  }
 }

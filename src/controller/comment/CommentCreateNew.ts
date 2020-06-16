@@ -9,10 +9,10 @@ export async function commentCreateNew(request: Request, response: Response) {
   const data = request.body;
 
   if (request.headers.authorization) {
-    const authHeader = request.headers.authorization
-    const token = JSON.parse(authHeader).split(" ")[1]
+    const authHeader = request.headers.authorization;
+    const token = JSON.parse(authHeader).split(' ')[1];
 
-    const sentData=  jwt.decode(token);
+    const sentData = jwt.decode(token);
     await getManager()
       .createQueryBuilder()
       .insert()
@@ -22,6 +22,6 @@ export async function commentCreateNew(request: Request, response: Response) {
 
     response.status(203).json({test: 'test'});
   } else {
-    response.status(401).json({message: "no auth token in header"})
+    response.status(401).json({message: 'no auth token in header'});
   }
 }
