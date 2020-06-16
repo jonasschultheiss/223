@@ -48,7 +48,8 @@ function commentCreateNew(request, response) {
                     console.log(request.headers);
                     if (!request.headers.authorization) return [3 /*break*/, 2];
                     authHeader = request.headers.authorization;
-                    token = JSON.stringify(authHeader).split(' ')[1];
+                    token = authHeader.split(" ")[1];
+                    console.log(token);
                     sentData = jwt.decode(token);
                     return [4 /*yield*/, typeorm_1.getManager()
                             .createQueryBuilder()

@@ -10,9 +10,10 @@ export async function commentCreateNew(request: Request, response: Response) {
 
   console.log(request.headers);
   if (request.headers.authorization) {
-    const authHeader = request.headers.authorization;
-    const token = JSON.stringify(authHeader).split(' ')[1];
+    const authHeader = request.headers.authorization
 
+    const token = authHeader.split(" ")[1];
+    console.log(token)
     const sentData = jwt.decode(token);
     await getManager()
       .createQueryBuilder()
