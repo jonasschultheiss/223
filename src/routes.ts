@@ -2,9 +2,9 @@ import {userCreateNew} from './controller/user/UserCreateNew';
 import {userGetAll} from './controller/user/UserGetAll';
 import {userDelete} from './controller/user/UserDelete';
 import {userGetOne} from './controller/user/UserGetOne';
-import {userTest} from './controller/user/UserTest'
+import {userTest} from './controller/user/UserTest';
 
-import {userLogin} from "./controller/auth/UserLogin";
+import {userLogin} from './controller/auth/UserLogin';
 
 import {userGetProfileImage} from './controller/user/UserGetProfileImage';
 import {userSetProfileImage} from './controller/user/UserSetProfileImage';
@@ -28,7 +28,8 @@ export const AppRoutes = [
     path: '/login',
     method: 'post',
     action: userLogin,
-  },{
+  },
+  {
     path: '/test',
     method: 'post',
     action: userTest,
