@@ -41,7 +41,7 @@ var Role_1 = require("../../entity/Role");
 require("dotenv");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
-function userTest(request, response) {
+function userCreateNew(request, response) {
     return __awaiter(this, void 0, void 0, function () {
         var user, _a, connection, queryRunner, databaseUser, userRole, err_1, createdUser, payload, token_secret, token;
         return __generator(this, function (_b) {
@@ -132,5 +132,5 @@ function userTest(request, response) {
         });
     });
 }
-exports.userTest = userTest;
+exports.userCreateNew = userCreateNew;
 //# sourceMappingURL=UserCreateNew.js.map

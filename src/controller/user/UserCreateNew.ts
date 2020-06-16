@@ -2,12 +2,12 @@ import { Request, Response } from 'express';
 import { getConnection } from 'typeorm';
 import { User } from '../../entity/User';
 import {Role} from "../../entity/Role";
-import "dotenv"
+import "dotenv";
 
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 
-export async function userTest(request: Request, response: Response) {
+export async function userCreateNew(request: Request, response: Response) {
   const user = new User();
 
   user.username = request.body.username;

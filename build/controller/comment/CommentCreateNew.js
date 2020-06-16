@@ -37,23 +37,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var Comment_1 = require("../../entity/Comment");
+var jwt = require("jsonwebtoken");
 function commentCreateNew(request, response) {
     return __awaiter(this, void 0, void 0, function () {
-        var data;
+        var data, authHeader, token, sentData;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     data = request.body;
+                    if (!request.headers.authorization) return [3 /*break*/, 2];
+                    authHeader = request.headers.authorization;
+                    token = JSON.parse(authHeader).split(" ")[1];
+                    sentData = jwt.decode(token);
                     return [4 /*yield*/, typeorm_1.getManager()
                             .createQueryBuilder()
                             .insert()
                             .into(Comment_1.Comment)
-                            .values({ text: data.text, user: data.userId, image: data.imageId })
+                            .values({ text: data.text, user: sentData.userId, image: data.imageId })
                             .execute()];
                 case 1:
                     _a.sent();
-                    response.send(203);
-                    return [2 /*return*/];
+                    response.status(203).json({ test: 'test' });
+                    return [3 /*break*/, 3];
+                case 2:
+                    response.status(401).json({ message: "no auth token in header" });
+                    _a.label = 3;
+                case 3: return [2 /*return*/];
             }
         });
     });
