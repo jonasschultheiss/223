@@ -42,6 +42,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var routes_1 = require("./routes");
 var dotenv = require("dotenv");
+var cors = require("cors");
 dotenv.config();
 // create connection with database
 // note that it's not active database connection
@@ -52,6 +53,7 @@ typeorm_1.createConnection()
     return __generator(this, function (_a) {
         app = express();
         app.use(bodyParser.json());
+        app.use(cors());
         // register all application routes
         routes_1.AppRoutes.forEach(function (route) {
             app[route.method](route.path, function (request, response, next) {

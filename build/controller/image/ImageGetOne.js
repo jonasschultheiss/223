@@ -35,10 +35,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var typeorm_1 = require("typeorm");
+var Image_1 = require("../../entity/Image");
 function imageGetOne(request, response) {
-    return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-        return [2 /*return*/];
-    }); });
+    return __awaiter(this, void 0, void 0, function () {
+        var connection, queryRunner, imageId, image;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    connection = typeorm_1.getConnection();
+                    queryRunner = connection.createQueryRunner();
+                    imageId = request.params.id;
+                    return [4 /*yield*/, typeorm_1.getRepository(Image_1.Image)
+                            .createQueryBuilder('image')
+                            .setLock('optimistic', 1)
+                            .select()
+                            .where('id = :id', { id: imageId })
+                            .getOne()];
+                case 1:
+                    image = _a.sent();
+                    response.status(200).json(image);
+                    return [2 /*return*/];
+            }
+        });
+    });
 }
 exports.imageGetOne = imageGetOne;
 //# sourceMappingURL=ImageGetOne.js.map

@@ -46,7 +46,7 @@ function userDelete(request, response) {
                 case 0:
                     if (!request.headers.authorization) return [3 /*break*/, 3];
                     authHeader = request.headers.authorization;
-                    token = JSON.parse(authHeader).split(' ')[1];
+                    token = authHeader.split(' ')[1];
                     sentData = jwt.decode(token);
                     if (!(sentData.role === 'admin' || sentData.userId === request.body.userId)) return [3 /*break*/, 2];
                     data = request.body;

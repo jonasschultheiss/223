@@ -85,8 +85,8 @@ export const AppRoutes = [
     action: imageCreateNew,
   },
   {
-    path: '/image/id',
-    method: 'post',
+    path: '/image/:id',
+    method: 'get',
     action: imageGetOne,
   },
   {
@@ -96,8 +96,8 @@ export const AppRoutes = [
   },
 
   {
-    path: '/image/username',
-    method: 'post',
+    path: '/image/user/:userId',
+    method: 'get',
     action: imageGetFromUser,
   },
   {

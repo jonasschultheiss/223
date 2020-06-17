@@ -7,12 +7,14 @@ export async function commentGetFromUser(request: Request, response: Response) {
   const queryRunner = await connection.createQueryRunner();
   const userId = request.params.id;
 
-  const comment = await getRepository(Comment)
+  //maybe implement JWT Token with check
+
+  const comment = await connection
+    .getRepository(Comment)
     .createQueryBuilder('comment')
-    //.setLock('optimistic', 1)
     .select()
-    .where('user = :id', {id: userId})
-    .getOne();
-  console.log(comment);
+    .where('comment.user = :id', {id: userId})
+    .getMany();
+
   response.status(200).json(comment);
 }

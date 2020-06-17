@@ -1,30 +1,21 @@
-import { Request, Response } from 'express';
-import { getManager, getConnection } from 'typeorm';
-import { User } from '../../entity/User';
-import { Profilepicture } from '../../entity/Profilepicture';
+import {Request, Response} from 'express';
+import {getManager, getConnection, getRepository} from 'typeorm';
+import {User} from '../../entity/User';
+import {Profilepicture} from '../../entity/Profilepicture';
+
 export async function userGetProfileImage(
   request: Request,
   response: Response
 ) {
-  // get a connection and create a new query runner
   const connection = getConnection();
   const queryRunner = connection.createQueryRunner();
-  let profileImage = null;
+  const userId = request.params.id;
 
-  // establish real database connection using our new query runner
-  await queryRunner.connect();
-
-  try {
-    profileImage = await queryRunner.manager.find(Profilepicture, {
-      where: { user: request.params.id }
-    });
-  } catch (err) {
-    // since we have errors let's rollback changes we made
-    await queryRunner.rollbackTransaction();
-  } finally {
-    // you need to release query runner which is manually created:
-    await queryRunner.release();
-  }
-
+  const profileImage = await getRepository(Profilepicture)
+    .createQueryBuilder('profileImage')
+    .setLock('optimistic', 1)
+    .select()
+    .where('profileImage.user = :id', {id: userId})
+    .getOne();
   response.status(200).json(profileImage);
 }

@@ -6,7 +6,7 @@ import * as jwt from 'jsonwebtoken';
 export async function userDelete(request: Request, response: Response) {
   if (request.headers.authorization) {
     const authHeader = request.headers.authorization;
-    const token = JSON.parse(authHeader).split(' ')[1];
+    const token = authHeader.split(' ')[1];
 
     const sentData = jwt.decode(token);
     if (sentData.role === 'admin' || sentData.userId === request.body.userId) {

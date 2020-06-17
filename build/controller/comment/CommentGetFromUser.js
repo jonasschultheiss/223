@@ -49,15 +49,14 @@ function commentGetFromUser(request, response) {
                 case 2:
                     queryRunner = _a.sent();
                     userId = request.params.id;
-                    return [4 /*yield*/, typeorm_1.getRepository(Comment_1.Comment)
+                    return [4 /*yield*/, connection
+                            .getRepository(Comment_1.Comment)
                             .createQueryBuilder('comment')
-                            //.setLock('optimistic', 1)
                             .select()
-                            .where('user = :id', { id: userId })
-                            .getOne()];
+                            .where('comment.user = :id', { id: userId })
+                            .getMany()];
                 case 3:
                     comment = _a.sent();
-                    console.log(comment);
                     response.status(200).json(comment);
                     return [2 /*return*/];
             }

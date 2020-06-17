@@ -10,6 +10,7 @@
   "license": "Apache-2.0",
   "keywords": [],
   "scripts": {
+    "update": "yarn compile && yarn start",
     "test": "nodemon build/index.ts",
     "test2": "nodemon --watch src/**/**/*.ts --ignore src/**/*.spec.ts --exec ts-node src/index.ts",
     "check": "gts check",

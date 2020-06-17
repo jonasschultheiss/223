@@ -36,48 +36,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
-var Role_1 = require("../../entity/Role");
+var User_1 = require("../../entity/User");
+var jwt = require("jsonwebtoken");
 function userGetRole(request, response) {
     return __awaiter(this, void 0, void 0, function () {
-        var connection, queryRunner, role, err_1;
+        var connection, authHeader, token, sentData, role, userData;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    connection = typeorm_1.getConnection();
-                    queryRunner = connection.createQueryRunner();
-                    role = null;
-                    // establish real database connection using our new query runner
-                    return [4 /*yield*/, queryRunner.connect()];
+                case 0: return [4 /*yield*/, typeorm_1.getConnection()];
                 case 1:
-                    // establish real database connection using our new query runner
-                    _a.sent();
-                    _a.label = 2;
+                    connection = _a.sent();
+                    authHeader = request.headers.authorization;
+                    token = authHeader.split(' ')[1];
+                    sentData = jwt.decode(token);
+                    role = null;
+                    if (!(sentData.role === 'admin')) return [3 /*break*/, 3];
+                    return [4 /*yield*/, connection
+                            .getRepository(User_1.User)
+                            .createQueryBuilder('user')
+                            .setLock('optimistic', 1)
+                            .leftJoinAndSelect('user.role', 'role')
+                            .where('user.id = :id', { id: sentData.userId })
+                            .getOne()];
                 case 2:
-                    _a.trys.push([2, 4, 6, 8]);
-                    return [4 /*yield*/, queryRunner.manager.find(Role_1.Role, {
-                            where: { user: request.params.id },
-                        })];
+                    userData = _a.sent();
+                    response.status(200).json(userData.role);
+                    return [3 /*break*/, 4];
                 case 3:
-                    role = _a.sent();
-                    return [3 /*break*/, 8];
-                case 4:
-                    err_1 = _a.sent();
-                    // since we have errors let's rollback changes we made
-                    return [4 /*yield*/, queryRunner.rollbackTransaction()];
-                case 5:
-                    // since we have errors let's rollback changes we made
-                    _a.sent();
-                    return [3 /*break*/, 8];
-                case 6: 
-                // you need to release query runner which is manually created:
-                return [4 /*yield*/, queryRunner.release()];
-                case 7:
-                    // you need to release query runner which is manually created:
-                    _a.sent();
-                    return [7 /*endfinally*/];
-                case 8:
-                    response.status(200).json(role);
-                    return [2 /*return*/];
+                    response.status(418).json('You not Admin b****');
+                    _a.label = 4;
+                case 4: return [2 /*return*/];
             }
         });
     });

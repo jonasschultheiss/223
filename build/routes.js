@@ -82,8 +82,8 @@ exports.AppRoutes = [
         action: ImageCreateNew_1.imageCreateNew,
     },
     {
-        path: '/image/id',
-        method: 'post',
+        path: '/image/:id',
+        method: 'get',
         action: ImageGetOne_1.imageGetOne,
     },
     {
@@ -92,8 +92,8 @@ exports.AppRoutes = [
         action: ImageLike_1.imageLike,
     },
     {
-        path: '/image/username',
-        method: 'post',
+        path: '/image/user/:userId',
+        method: 'get',
         action: ImageGetFromUser_1.imageGetFromUser,
     },
     {
