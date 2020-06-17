@@ -4,10 +4,7 @@ import {getConnection} from 'typeorm';
 import {User} from '../../entity/User';
 import {Role} from '../../entity/Role';
 import {CLIENT_RENEG_LIMIT} from 'tls';
-export async function userSetRole(
-  request: Request,
-  response: Response
-) {
+export async function userSetRole(request: Request, response: Response) {
   const role = new Role();
   //User.roleId = request.body.roleId;
   //profilePicture.user = request.body.user;
@@ -22,6 +19,7 @@ export async function userSetRole(
   await queryRunner.startTransaction();
 
   try {
+    //TODO: Add transaction
     // execute some operations on this transaction:
     //await queryRunner.manager.save(profilePicture);
 

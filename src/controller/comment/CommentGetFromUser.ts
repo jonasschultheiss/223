@@ -7,7 +7,7 @@ export async function commentGetFromUser(request: Request, response: Response) {
   const queryRunner = await connection.createQueryRunner();
   const userId = request.params.id;
 
-  //maybe implement JWT Token with check
+  //TODO: maybe implement JWT Token with check
 
   const comment = await connection
     .getRepository(Comment)

@@ -7,7 +7,7 @@ export async function imageGetFromUser(request: Request, response: Response) {
   const queryRunner = await connection.createQueryRunner();
   const userId = request.params.userId;
 
-  //maybe implement JWT Token with check
+  //TODO: maybe implement JWT Token with check
 
   const image = await connection
     .getRepository(Image)

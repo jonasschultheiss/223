@@ -2,14 +2,14 @@ import {Request, Response} from 'express';
 import {getManager} from 'typeorm';
 import {Like} from '../../entity/Like';
 
-export async function imageLike(request: Request, response: Response) {
+export async function imageUnlike(request: Request, response: Response) {
   const data = request.body;
   await getManager()
     .createQueryBuilder()
-    .insert()
+    .delete()
     //TODO: refactor with transaction
-    .into(Like)
-    .values({image: data.imageId, user: data.userId})
+    .from(Like)
+    .where({image: data.imageId, user: data.userId})
     .execute();
 
   response.send(203);

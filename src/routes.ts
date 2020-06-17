@@ -15,6 +15,7 @@ import {imageGetAll} from './controller/image/ImageGetAll';
 import {imageGetFromUser} from './controller/image/ImageGetFromUser';
 import {imageGetOne} from './controller/image/ImageGetOne';
 import {imageLike} from './controller/image/ImageLike';
+import {imageUnlike} from './controller/image/ImageUnlike';
 
 import {commentCreateNew} from './controller/comment/CommentCreateNew';
 import {commentDelete} from './controller/comment/CommentDelete';
@@ -93,6 +94,11 @@ export const AppRoutes = [
     path: '/image/like',
     method: 'post',
     action: imageLike,
+  },
+  {
+    path: '/image/like',
+    method: 'delete',
+    action: imageUnlike,
   },
 
   {

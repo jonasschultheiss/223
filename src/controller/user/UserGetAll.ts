@@ -7,5 +7,5 @@ export async function userGetAll(request: Request, response: Response) {
     .createQueryBuilder('user')
     //can't setLock Optimistic with get Many
     .getMany();
-  response.set(users).status(200);
+  response.status(200).json(users);
 }

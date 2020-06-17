@@ -7,5 +7,5 @@ export async function imageGetAll(request: Request, response: Response) {
     .createQueryBuilder('image')
     //can't setLock Optimistic with get Many
     .getMany();
-  response.set(images).status(200);
+  response.status(200).json(images);
 }
