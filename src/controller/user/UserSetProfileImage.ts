@@ -1,9 +1,9 @@
-import { Request, Response, query } from 'express';
-import { getManager } from 'typeorm';
-import { getConnection } from 'typeorm';
-import { User } from '../../entity/User';
-import { Profilepicture } from '../../entity/Profilepicture';
-import { CLIENT_RENEG_LIMIT } from 'tls';
+import {Request, Response, query} from 'express';
+import {getManager} from 'typeorm';
+import {getConnection} from 'typeorm';
+import {User} from '../../entity/User';
+import {Profilepicture} from '../../entity/Profilepicture';
+import {CLIENT_RENEG_LIMIT} from 'tls';
 export async function userSetProfileImage(
   request: Request,
   response: Response
@@ -22,6 +22,7 @@ export async function userSetProfileImage(
   await queryRunner.startTransaction();
 
   try {
+    //TODO: Remove all the profilepictures from table
     // execute some operations on this transaction:
     await queryRunner.manager.save(profilePicture);
 
