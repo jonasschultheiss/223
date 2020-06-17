@@ -25,7 +25,8 @@ exports.AppRoutes = [
         path: '/login',
         method: 'post',
         action: UserLogin_1.userLogin,
-    }, {
+    },
+    {
         path: '/test',
         method: 'post',
         action: UserTest_1.userTest,

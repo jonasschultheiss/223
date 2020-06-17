@@ -13,6 +13,7 @@ export async function imageCreateNew(request: Request, response: Response) {
     const sentData = jwt.decode(token);
     await getManager()
       .createQueryBuilder()
+      .setLock('optimistic', 1)
       .insert()
       .into(Image)
       .values({

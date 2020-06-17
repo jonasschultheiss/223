@@ -35,10 +35,41 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var typeorm_1 = require("typeorm");
+var User_1 = require("../../entity/User");
+var jwt = require("jsonwebtoken");
 function userDelete(request, response) {
-    return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-        return [2 /*return*/];
-    }); });
+    return __awaiter(this, void 0, void 0, function () {
+        var authHeader, token, sentData, data;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!request.headers.authorization) return [3 /*break*/, 3];
+                    authHeader = request.headers.authorization;
+                    token = JSON.parse(authHeader).split(' ')[1];
+                    sentData = jwt.decode(token);
+                    if (!(sentData.role === 'admin' || sentData.userId === request.body.userId)) return [3 /*break*/, 2];
+                    data = request.body;
+                    return [4 /*yield*/, typeorm_1.getConnection()
+                            .createQueryBuilder()
+                            .delete()
+                            .from(User_1.User)
+                            .where('user = :id', {
+                            id: sentData.userId,
+                        })
+                            .execute()];
+                case 1:
+                    _a.sent();
+                    response.status(200).json({ message: 'image successfully deleted' });
+                    _a.label = 2;
+                case 2: return [3 /*break*/, 4];
+                case 3:
+                    response.status(401).json({ message: 'no auth token in header' });
+                    _a.label = 4;
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
 }
 exports.userDelete = userDelete;
 //# sourceMappingURL=UserDelete.js.map
