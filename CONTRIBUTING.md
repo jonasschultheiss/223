@@ -23,6 +23,5 @@
 ```bash
 yarn typeorm entity:create -n Role
 yarn typeorm migration:create -n roleMigration
-yarn typeorm migration:run
-yarn typeorm schema:sync
+yarn typeorm migration:run && yarn typeorm schema:sync
 ```

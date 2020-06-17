@@ -1,15 +1,14 @@
 import {Request, Response} from 'express';
 import {getManager} from 'typeorm';
-import {User} from '../entity/User';
+import {Like} from '../../entity/Like';
 
-export async function userCreateNew(request: Request, response: Response) {
+export async function imageLike(request: Request, response: Response) {
   const data = request.body;
-
   await getManager()
     .createQueryBuilder()
     .insert()
-    .into(User)
-    .values({username: data.username, password: data.password})
+    .into(Like)
+    .values({image: data.imageId, user: data.userId})
     .execute();
 
   response.send(203);

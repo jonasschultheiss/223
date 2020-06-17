@@ -10,12 +10,15 @@
   "license": "Apache-2.0",
   "keywords": [],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "update": "yarn compile && yarn start",
+    "test": "nodemon build/index.ts",
+    "test2": "nodemon --watch src/**/**/*.ts --ignore src/**/*.spec.ts --exec ts-node src/index.ts",
     "check": "gts check",
     "clean": "gts clean",
     "compile": "tsc",
     "fix": "gts fix",
     "start": "ts-node src/index.ts",
+    "dev": "nodemon ts-node src/index.ts",
     "prepare": "yarn compile",
     "pretest": "yarn compile",
     "posttest": "yarn check",
@@ -30,13 +33,19 @@
     "typescript": "3.3.3333"
   },
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "global": "^4.4.0",
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.14.1",
+    "nodemon": "^2.0.4",
     "pg": "^8.2.1",
     "reflect-metadata": "^0.1.10",
     "ts-node": "^8.10.2",
-    "typeorm": "0.2.25"
+    "typeorm": "0.2.25",
+    "yarn": "^1.22.4"
   }
 }
