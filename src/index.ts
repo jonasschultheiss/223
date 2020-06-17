@@ -5,6 +5,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import {AppRoutes} from './routes';
 import * as dotenv from 'dotenv';
+import * as cors from 'cors';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ createConnection()
     // create express app
     const app = express();
     app.use(bodyParser.json());
+    app.use(cors());
 
     // register all application routes
     AppRoutes.forEach(route => {
