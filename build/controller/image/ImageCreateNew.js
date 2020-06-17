@@ -51,6 +51,7 @@ function imageCreateNew(request, response) {
                     sentData = jwt.decode(token);
                     return [4 /*yield*/, typeorm_1.getManager()
                             .createQueryBuilder()
+                            .setLock('optimistic', 1)
                             .insert()
                             .into(Image_1.Image)
                             .values({

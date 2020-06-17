@@ -39,43 +39,21 @@ var typeorm_1 = require("typeorm");
 var User_1 = require("../../entity/User");
 function userGetOne(request, response) {
     return __awaiter(this, void 0, void 0, function () {
-        var connection, queryRunner, user, err_1;
+        var connection, queryRunner, userId, user;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     connection = typeorm_1.getConnection();
                     queryRunner = connection.createQueryRunner();
-                    user = null;
-                    // establish real database connection using our new query runner
-                    return [4 /*yield*/, queryRunner.connect()];
+                    userId = request.params.id;
+                    return [4 /*yield*/, typeorm_1.getRepository(User_1.User)
+                            .createQueryBuilder('user')
+                            .setLock('optimistic', 1)
+                            .select()
+                            .where('id = :id', { id: userId })
+                            .getOne()];
                 case 1:
-                    // establish real database connection using our new query runner
-                    _a.sent();
-                    _a.label = 2;
-                case 2:
-                    _a.trys.push([2, 4, 6, 8]);
-                    return [4 /*yield*/, queryRunner.manager.find(User_1.User, {
-                            where: { id: request.params.id }
-                        })];
-                case 3:
                     user = _a.sent();
-                    return [3 /*break*/, 8];
-                case 4:
-                    err_1 = _a.sent();
-                    // since we have errors let's rollback changes we made
-                    return [4 /*yield*/, queryRunner.rollbackTransaction()];
-                case 5:
-                    // since we have errors let's rollback changes we made
-                    _a.sent();
-                    return [3 /*break*/, 8];
-                case 6: 
-                // you need to release query runner which is manually created:
-                return [4 /*yield*/, queryRunner.release()];
-                case 7:
-                    // you need to release query runner which is manually created:
-                    _a.sent();
-                    return [7 /*endfinally*/];
-                case 8:
                     response.status(200).json(user);
                     return [2 /*return*/];
             }

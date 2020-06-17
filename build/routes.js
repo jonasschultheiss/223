@@ -112,8 +112,8 @@ exports.AppRoutes = [
         action: CommentCreateNew_1.commentCreateNew,
     },
     {
-        path: '/comment/username',
-        method: 'post',
+        path: '/comment/:id',
+        method: 'get',
         action: CommentGetFromUser_1.commentGetFromUser,
     },
     {

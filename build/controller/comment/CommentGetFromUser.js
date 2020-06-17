@@ -35,10 +35,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var typeorm_1 = require("typeorm");
+var Comment_1 = require("../../entity/Comment");
 function commentGetFromUser(request, response) {
-    return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-        return [2 /*return*/];
-    }); });
+    return __awaiter(this, void 0, void 0, function () {
+        var connection, queryRunner, userId, comment;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, typeorm_1.getConnection()];
+                case 1:
+                    connection = _a.sent();
+                    return [4 /*yield*/, connection.createQueryRunner()];
+                case 2:
+                    queryRunner = _a.sent();
+                    userId = request.params.id;
+                    return [4 /*yield*/, typeorm_1.getRepository(Comment_1.Comment)
+                            .createQueryBuilder('comment')
+                            //.setLock('optimistic', 1)
+                            .select()
+                            .where('user = :id', { id: userId })
+                            .getOne()];
+                case 3:
+                    comment = _a.sent();
+                    console.log(comment);
+                    response.status(200).json(comment);
+                    return [2 /*return*/];
+            }
+        });
+    });
 }
 exports.commentGetFromUser = commentGetFromUser;
 //# sourceMappingURL=CommentGetFromUser.js.map

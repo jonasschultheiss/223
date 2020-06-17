@@ -44,6 +44,7 @@ function commentGetAll(request, response) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, typeorm_1.getRepository(Comment_1.Comment)
                         .createQueryBuilder('comment')
+                        //can't setLock Optimistic with get Many
                         .getMany()];
                 case 1:
                     comments = _a.sent();

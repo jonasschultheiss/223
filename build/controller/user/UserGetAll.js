@@ -42,7 +42,10 @@ function userGetAll(request, response) {
         var users;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User).createQueryBuilder('user').getMany()];
+                case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User)
+                        .createQueryBuilder('user')
+                        //can't setLock Optimistic with get Many
+                        .getMany()];
                 case 1:
                     users = _a.sent();
                     response.set(users).status(200);

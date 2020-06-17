@@ -117,8 +117,8 @@ export const AppRoutes = [
     action: commentCreateNew,
   },
   {
-    path: '/comment/username',
-    method: 'post',
+    path: '/comment/:id',
+    method: 'get',
     action: commentGetFromUser,
   },
   {
