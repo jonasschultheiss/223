@@ -8,8 +8,7 @@ export async function imageCreateNew(request: Request, response: Response) {
 
   if (request.headers.authorization) {
     const authHeader = request.headers.authorization;
-    const token = JSON.parse(authHeader).split(' ')[1];
-
+    const token = JSON.parse(authHeader.split(' ')[1]);
     const sentData = jwt.decode(token);
     await getManager()
       .createQueryBuilder()

@@ -16,7 +16,7 @@ createConnection()
   .then(async connection => {
     // create express app
     const app = express();
-    app.use(bodyParser.json());
+    app.use(bodyParser.json({limit: '50mb'}));
     app.use(cors());
 
     // register all application routes
