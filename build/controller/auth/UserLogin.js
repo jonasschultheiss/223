@@ -64,7 +64,9 @@ function userLogin(request, response) {
                             .createQueryBuilder("user")
                             .leftJoinAndSelect("user.role", "role")
                             .where("username = :name", { name: sentUser })
-                            .getOne()];
+                            .getOne()
+                        //TODO: get the profilepicture of the user
+                    ];
                 case 3:
                     userData = _a.sent();
                     payload = {

@@ -26,7 +26,7 @@ export async function userLogin(request: Request, response: Response) {
         .leftJoinAndSelect("user.role", "role")
         .where("username = :name", {name: sentUser})
         .getOne()
-
+    //TODO: get the profilepicture of the user
     const payload = {
       userId: userData.id,
       username: userData.username,
