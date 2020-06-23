@@ -129,33 +129,32 @@ var __generator =
   };
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
-var Image_1 = require('../../entity/Image');
-function imageGetOne(request, response) {
+var Like_1 = require('../../entity/Like');
+function imageUnlike(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var connection, queryRunner, imageId, image;
+    var data;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          connection = typeorm_1.getConnection();
-          queryRunner = connection.createQueryRunner();
-          imageId = request.params.id;
+          data = request.body;
           return [
             4 /*yield*/,
             typeorm_1
-              .getRepository(Image_1.Image)
-              .createQueryBuilder('image')
-              .setLock('optimistic', 1)
-              .select()
-              .where('id = :id', {id: imageId})
-              .getOne(),
+              .getManager()
+              .createQueryBuilder()
+              .delete()
+              //TODO: refactor with transaction
+              .from(Like_1.Like)
+              .where({image: data.imageId, user: data.userId})
+              .execute(),
           ];
         case 1:
-          image = _a.sent();
-          response.status(200).json(image);
+          _a.sent();
+          response.send(203);
           return [2 /*return*/];
       }
     });
   });
 }
-exports.imageGetOne = imageGetOne;
-//# sourceMappingURL=ImageGetOne.js.map
+exports.imageUnlike = imageUnlike;
+//# sourceMappingURL=ImageUnlike.js.map

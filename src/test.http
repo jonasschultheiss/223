@@ -46,3 +46,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI4LCJ1c2VybmFtZSI6InhlN
   "userId": 1,
   "imageId": 1
 }
+
+
+###
+GET http://localhost:3000/image?page=2
+
+###

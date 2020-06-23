@@ -129,33 +129,30 @@ var __generator =
   };
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
-var Image_1 = require('../../entity/Image');
-function imageGetOne(request, response) {
+var Comment_1 = require('../../entity/Comment');
+function commentGetAllFromPost(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var connection, queryRunner, imageId, image;
+    var postId, comments;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          connection = typeorm_1.getConnection();
-          queryRunner = connection.createQueryRunner();
-          imageId = request.params.id;
+          postId = request.body.postId;
           return [
             4 /*yield*/,
             typeorm_1
-              .getRepository(Image_1.Image)
-              .createQueryBuilder('image')
-              .setLock('optimistic', 1)
-              .select()
-              .where('id = :id', {id: imageId})
-              .getOne(),
+              .getRepository(Comment_1.Comment)
+              .createQueryBuilder('comment')
+              .where('comment.id=:id', {id: postId})
+              //can't setLock Optimistic with get Many
+              .getMany(),
           ];
         case 1:
-          image = _a.sent();
-          response.status(200).json(image);
+          comments = _a.sent();
+          response.set(comments).status(200);
           return [2 /*return*/];
       }
     });
   });
 }
-exports.imageGetOne = imageGetOne;
-//# sourceMappingURL=ImageGetOne.js.map
+exports.commentGetAllFromPost = commentGetAllFromPost;
+//# sourceMappingURL=CommentGetAllFromPost.js.map

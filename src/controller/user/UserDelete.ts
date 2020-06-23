@@ -16,7 +16,7 @@ export async function userDelete(request: Request, response: Response) {
         .delete()
         .from(User)
         .where('user = :id', {
-          id: sentData.userId,
+          id: data.userId,
         })
         .execute();
 
