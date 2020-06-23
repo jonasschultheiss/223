@@ -52,3 +52,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI4LCJ1c2VybmFtZSI6InhlN
 GET http://localhost:3000/image?page=2
 {}
 ###
+POST http://localhost:3000/user/profilepicture
+Content-Type: application/json
+
+{
+  "user": 17,
+  "content": "asdasdfasdfasdfadsf"
+}
+
+###

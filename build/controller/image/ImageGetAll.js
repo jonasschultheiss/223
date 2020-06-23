@@ -129,7 +129,6 @@ var __generator =
   };
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
-var Image_1 = require('../../entity/Image');
 function imageGetAll(request, response) {
   return __awaiter(this, void 0, void 0, function () {
     var page, skip, images;
@@ -140,12 +139,14 @@ function imageGetAll(request, response) {
           skip = request.query.page === '1' ? 0 : Number(page) * 10;
           return [
             4 /*yield*/,
-            typeorm_1.getRepository(Image_1.Image).findAndCount({
-              order: {updateDate: 'DESC'},
-              take: 10,
-              skip: skip,
-            }),
-            //can't setLock Optimistic with get Many
+            typeorm_1
+              .createQueryBuilder('Image')
+              .leftJoinAndSelect('Image.user', 'user')
+              .where('user.id = :id', {id: '17'})
+              .offset(skip)
+              .limit(10)
+              .orderBy('Image.updateDate', 'DESC')
+              .getMany(),
           ];
         case 1:
           images = _a.sent();

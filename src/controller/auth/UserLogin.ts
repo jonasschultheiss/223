@@ -37,7 +37,7 @@ export async function userLogin(request: Request, response: Response) {
       userId: userData.id,
       username: userData.username,
       role: userData.role.name,
-      profilePicture: profilePicture.content || []
+      profilePicture: profilePicture ? profilePicture.content : []
     }
 
     const token_secret = process.env.JWT_SECRET || "abcdefghijklmnopqrstuvwxyz"

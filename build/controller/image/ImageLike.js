@@ -132,25 +132,58 @@ var typeorm_1 = require('typeorm');
 var Like_1 = require('../../entity/Like');
 function imageLike(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var data;
+    var data, like, connection, queryRunner, err_1;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
           data = request.body;
-          return [
-            4 /*yield*/,
-            typeorm_1
-              .getManager()
-              .createQueryBuilder()
-              .insert()
-              //TODO: refactor with transaction
-              .into(Like_1.Like)
-              .values({image: data.imageId, user: data.userId})
-              .execute(),
-          ];
+          like = new Like_1.Like();
+          like.image = data.imageId;
+          like.user = data.userId;
+          connection = typeorm_1.getConnection();
+          queryRunner = connection.createQueryRunner();
+          // establish real database connection using our new query runner
+          return [4 /*yield*/, queryRunner.connect()];
         case 1:
+          // establish real database connection using our new query runner
           _a.sent();
-          response.send(203);
+          // lets now open a new transaction:
+          return [4 /*yield*/, queryRunner.startTransaction()];
+        case 2:
+          // lets now open a new transaction:
+          _a.sent();
+          _a.label = 3;
+        case 3:
+          _a.trys.push([3, 6, 8, 10]);
+          // execute some operations on this transaction:
+          return [4 /*yield*/, queryRunner.manager.save(like)];
+        case 4:
+          // execute some operations on this transaction:
+          _a.sent();
+          // commit transaction now:
+          return [4 /*yield*/, queryRunner.commitTransaction()];
+        case 5:
+          // commit transaction now:
+          _a.sent();
+          response.status(203).json({message: 'Image liked'});
+          return [3 /*break*/, 10];
+        case 6:
+          err_1 = _a.sent();
+          // since we have errors let's rollback changes we made
+          return [4 /*yield*/, queryRunner.rollbackTransaction()];
+        case 7:
+          // since we have errors let's rollback changes we made
+          _a.sent();
+          response.status(500).json({message: 'Liking image failed'});
+          return [3 /*break*/, 10];
+        case 8:
+          // you need to release query runner which is manually created:
+          return [4 /*yield*/, queryRunner.release()];
+        case 9:
+          // you need to release query runner which is manually created:
+          _a.sent();
+          return [7 /*endfinally*/];
+        case 10:
           return [2 /*return*/];
       }
     });

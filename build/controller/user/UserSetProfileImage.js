@@ -129,6 +129,7 @@ var __generator =
   };
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
+var typeorm_2 = require('typeorm');
 var Profilepicture_1 = require('../../entity/Profilepicture');
 function userSetProfileImage(request, response) {
   return __awaiter(this, void 0, void 0, function () {
@@ -136,7 +137,7 @@ function userSetProfileImage(request, response) {
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          connection = typeorm_1.getConnection();
+          connection = typeorm_2.getConnection();
           queryRunner = connection.createQueryRunner();
           // establish real database connection using our new query runner
           return [4 /*yield*/, queryRunner.connect()];
@@ -145,52 +146,71 @@ function userSetProfileImage(request, response) {
           _a.sent();
           return [
             4 /*yield*/,
-            queryRunner.manager.findOne(Profilepicture_1.Profilepicture, {
-              where: {userId: request.body.user},
-            }),
+            typeorm_1
+              .createQueryBuilder('Profilepicture')
+              .leftJoinAndSelect('Profilepicture.user', 'user')
+              .where('user.id = :id', {id: '17'})
+              .getOne(),
           ];
         case 2:
-          profilePicture = _a.sent() || new Profilepicture_1.Profilepicture();
-          profilePicture.content = request.body.content;
-          profilePicture.user = request.body.user;
+          profilePicture = _a.sent();
+          //const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}}) || new Profilepicture()
+          //profilePicture.content = request.body.content;
+          //profilePicture.user = request.body.user;
           // lets now open a new transaction:
           return [4 /*yield*/, queryRunner.startTransaction()];
         case 3:
+          //const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}}) || new Profilepicture()
+          //profilePicture.content = request.body.content;
+          //profilePicture.user = request.body.user;
           // lets now open a new transaction:
           _a.sent();
+          console.log(profilePicture);
           _a.label = 4;
         case 4:
-          _a.trys.push([4, 7, 9, 11]);
-          //TODO: Remove all the profilepictures from table
-          // execute some operations on this transaction:
-          return [4 /*yield*/, queryRunner.manager.save(profilePicture)];
+          _a.trys.push([4, 10, 12, 14]);
+          if (!profilePicture) return [3 /*break*/, 6];
+          return [
+            4 /*yield*/,
+            queryRunner.manager.update(
+              Profilepicture_1.Profilepicture,
+              {where: {user: request.body.user}},
+              profilePicture
+            ),
+          ];
         case 5:
-          //TODO: Remove all the profilepictures from table
-          // execute some operations on this transaction:
           _a.sent();
+          return [3 /*break*/, 8];
+        case 6:
+          return [4 /*yield*/, queryRunner.manager.save(profilePicture)];
+        case 7:
+          _a.sent();
+          _a.label = 8;
+        case 8:
           // commit transaction now:
           return [4 /*yield*/, queryRunner.commitTransaction()];
-        case 6:
+        case 9:
           // commit transaction now:
           _a.sent();
-          return [3 /*break*/, 11];
-        case 7:
+          response.status(200).json({message: 'success'});
+          return [3 /*break*/, 14];
+        case 10:
           err_1 = _a.sent();
           // since we have errors let's rollback changes we made
           return [4 /*yield*/, queryRunner.rollbackTransaction()];
-        case 8:
+        case 11:
           // since we have errors let's rollback changes we made
           _a.sent();
-          return [3 /*break*/, 11];
-        case 9:
+          response.status(500).json({message: 'something went wrong!'});
+          return [3 /*break*/, 14];
+        case 12:
           // you need to release query runner which is manually created:
           return [4 /*yield*/, queryRunner.release()];
-        case 10:
+        case 13:
           // you need to release query runner which is manually created:
           _a.sent();
           return [7 /*endfinally*/];
-        case 11:
-          response.status(200).send();
+        case 14:
           return [2 /*return*/];
       }
     });

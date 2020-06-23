@@ -1,5 +1,5 @@
 import {Request, Response, query} from 'express';
-import {getManager} from 'typeorm';
+import {createQueryBuilder, getManager} from 'typeorm';
 import {getConnection} from 'typeorm';
 import {User} from '../../entity/User';
 import {Profilepicture} from '../../entity/Profilepicture';
@@ -15,27 +15,41 @@ export async function userSetProfileImage(
 
   // establish real database connection using our new query runner
   await queryRunner.connect();
+  const profilePicture = await createQueryBuilder("Profilepicture")
+    .leftJoinAndSelect("Profilepicture.user", "user")
+    .where("user.id = :id", { id: "17" })
+    .getOne();
 
-  const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{userId: request.body.user}}) || new Profilepicture()
 
-  profilePicture.content = request.body.content;
-  profilePicture.user = request.body.user;
+
+  //const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}}) || new Profilepicture()
+
+  //profilePicture.content = request.body.content;
+  //profilePicture.user = request.body.user;
   // lets now open a new transaction:
   await queryRunner.startTransaction();
 
+
+  console.log(profilePicture)
   try {
-    //TODO: Remove all the profilepictures from table
-    // execute some operations on this transaction:
-    await queryRunner.manager.save(profilePicture);
+    if (profilePicture){
+      await queryRunner.manager.update(Profilepicture, { where: {user:  request.body.user}}, profilePicture);
+
+    }else{
+      await queryRunner.manager.save(profilePicture);
+    }
+
 
     // commit transaction now:
     await queryRunner.commitTransaction();
+    response.status(200).json({message: "success"});
   } catch (err) {
     // since we have errors let's rollback changes we made
     await queryRunner.rollbackTransaction();
+    response.status(500).json({message: "something went wrong!"})
   } finally {
     // you need to release query runner which is manually created:
     await queryRunner.release();
   }
-  response.status(200).send();
+
 }

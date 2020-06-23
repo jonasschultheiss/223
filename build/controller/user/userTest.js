@@ -130,13 +130,28 @@ var __generator =
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
 require('dotenv');
+var Profilepicture_1 = require('../../entity/Profilepicture');
 function userTest(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var connection;
+    var connection, test;
     return __generator(this, function (_a) {
-      connection = typeorm_1.getConnection();
-      response.status(200).json();
-      return [2 /*return*/];
+      switch (_a.label) {
+        case 0:
+          connection = typeorm_1.getConnection();
+          return [
+            4 /*yield*/,
+            connection
+              .getRepository(Profilepicture_1.Profilepicture)
+              .createQueryBuilder('profilePicture')
+              .select()
+              .where('profilePicture.user = :id', {id: 17})
+              .getOne(),
+          ];
+        case 1:
+          test = _a.sent();
+          response.status(200).json(test);
+          return [2 /*return*/];
+      }
     });
   });
 }
