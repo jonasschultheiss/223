@@ -9,9 +9,6 @@ export async function userSetProfileImage(
   response: Response
 ) {
 
-  const profilePicture = new Profilepicture();
-  profilePicture.content = request.body.content;
-  profilePicture.user = request.body.user;
 
   const connection = getConnection();
   const queryRunner = connection.createQueryRunner();
@@ -19,6 +16,10 @@ export async function userSetProfileImage(
   // establish real database connection using our new query runner
   await queryRunner.connect();
 
+  const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{userId: request.body.user}}) || new Profilepicture()
+
+  profilePicture.content = request.body.content;
+  profilePicture.user = request.body.user;
   // lets now open a new transaction:
   await queryRunner.startTransaction();
 
