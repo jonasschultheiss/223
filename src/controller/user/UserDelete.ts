@@ -20,7 +20,7 @@ export async function userDelete(request: Request, response: Response) {
         })
         .execute();
 
-      response.status(200).json({message: 'image successfully deleted'});
+      response.status(200).json({message: 'user successfully deleted'});
     }
   } else {
     response.status(401).json({message: 'no auth token in header'});

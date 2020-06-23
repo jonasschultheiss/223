@@ -129,41 +129,30 @@ var __generator =
   };
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
-var User_1 = require('../../entity/User');
-function userSetRole(request, response) {
+var Comment_1 = require('../../entity/Comment');
+function commentGetAllFromPost(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var roleId, userId;
+    var postId, comments;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          if (!(request.body.roleId && request.body.userId))
-            return [3 /*break*/, 2];
-          roleId = request.body.roleId;
-          userId = request.body.userId;
+          postId = request.params.id;
           return [
             4 /*yield*/,
             typeorm_1
-              .getConnection()
-              .createQueryBuilder()
-              .update(User_1.User)
-              .set({
-                role: roleId,
-              })
-              .where('id = :id', {id: userId})
-              .execute(),
+              .getRepository(Comment_1.Comment)
+              .createQueryBuilder('comment')
+              .where('comment.image=:id', {id: postId})
+              //can't setLock Optimistic with get Many
+              .getMany(),
           ];
         case 1:
-          _a.sent();
-          response.status(200).json({message: 'userrole set'});
-          return [3 /*break*/, 3];
-        case 2:
-          response.status(500).json({message: 'failed to set user role'});
-          _a.label = 3;
-        case 3:
+          comments = _a.sent();
+          response.set(comments).status(200);
           return [2 /*return*/];
       }
     });
   });
 }
-exports.userSetRole = userSetRole;
-//# sourceMappingURL=UserSetRole.js.map
+exports.commentGetAllFromPost = commentGetAllFromPost;
+//# sourceMappingURL=CommentGetAllFromPost.js.map

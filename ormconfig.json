@@ -3,7 +3,7 @@
   "host": "localhost",
   "port": 5432,
   "username": "quest1onmark",
-  "password": "",
+  "password": "1234",
   "database": "frozenPants",
   "synchronize": true,
   "logging": false,

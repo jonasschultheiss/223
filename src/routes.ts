@@ -23,6 +23,7 @@ import {commentGetAll} from './controller/comment/CommentGetAll';
 import {commentGetFromUser} from './controller/comment/CommentGetFromUser';
 import {userGetRole} from './controller/auth/UserGetRole';
 import {userSetRole} from './controller/auth/UserSetRole';
+import {commentGetAllFromPost} from "./controller/comment/CommentGetAllFromPost";
 
 export const AppRoutes = [
   {
@@ -61,8 +62,8 @@ export const AppRoutes = [
     action: userGetRole,
   },
   {
-    path: '/user/role/:id',
-    method: 'set',
+    path: '/user/role',
+    method: 'post',
     action: userSetRole,
   },
   {
@@ -126,6 +127,11 @@ export const AppRoutes = [
     path: '/comment/:id',
     method: 'get',
     action: commentGetFromUser,
+  },
+  {
+    path: '/comment/post/:id',
+    method: 'get',
+    action: commentGetAllFromPost,
   },
   {
     path: '/comment/id',
