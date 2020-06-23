@@ -10,17 +10,11 @@ export async function userGetProfileImage(
   const connection = getConnection();
   const userId = request.params.id;
 
-  const user = await createQueryBuilder("User")
-    .leftJoinAndSelect("User.profilePicture", "profilePicture", "profilePicture.id = User.profilePicture")
-    .where("User.id = :id", {id: userId})
+  const user = await connection
+    .getRepository(User)
+    .createQueryBuilder("user")
+    .leftJoinAndSelect("user.profilePicture", "image")
+    .where("user.id = :id", {id: userId})
     .getOne();
-
-
-  const profileImage = await getRepository(Profilepicture)
-    .createQueryBuilder('profileImage')
-    .setLock('optimistic', 1)
-    .select()
-    .where('profileImage.id = :id', {id: user['profilePicture']['id']})
-    .getOne();
-  response.status(200).json(profileImage);
+  response.status(200).json(user.profilePicture);
 }

@@ -133,7 +133,6 @@ var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 require('dotenv');
 var User_1 = require('../../entity/User');
-var Profilepicture_1 = require('../../entity/Profilepicture');
 function userLogin(request, response) {
   return __awaiter(this, void 0, void 0, function () {
     var sentUser,
@@ -142,7 +141,7 @@ function userLogin(request, response) {
       queryRunner,
       databaseUser,
       userData,
-      profilePicture,
+      userProfile,
       payload,
       token_secret,
       token;
@@ -160,9 +159,12 @@ function userLogin(request, response) {
           _a.sent();
           return [
             4 /*yield*/,
-            queryRunner.manager.findOne(User_1.User, {
-              where: {username: sentUser},
-            }),
+            connection
+              .getRepository(User_1.User)
+              .createQueryBuilder('user')
+              .select('user')
+              .where('user.username = :name', {name: sentUser})
+              .getOne(),
           ];
         case 2:
           databaseUser = _a.sent();
@@ -182,21 +184,21 @@ function userLogin(request, response) {
           return [
             4 /*yield*/,
             connection
-              .getRepository(Profilepicture_1.Profilepicture)
-              .createQueryBuilder('profilePicture')
-              .select('profilePicture')
-              .where('profilePicture.id = :id', {
-                id: userData.profilePicture.id,
-              })
+              .getRepository(User_1.User)
+              .createQueryBuilder('user')
+              .leftJoinAndSelect('user.profilePicture', 'image')
+              .where('user.id = :id', {id: userData.id})
               .getOne(),
           ];
         case 4:
-          profilePicture = _a.sent();
+          userProfile = _a.sent();
           payload = {
             userId: userData.id,
             username: userData.username,
             role: userData.role.name,
-            profilePicture: profilePicture ? profilePicture.content : [],
+            profilePicture: userProfile.profilePicture
+              ? userProfile.profilePicture.content
+              : [],
           };
           token_secret = process.env.JWT_SECRET || 'abcdefghijklmnopqrstuvwxyz';
           token = jwt.sign(JSON.stringify(payload), token_secret);

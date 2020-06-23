@@ -129,10 +129,10 @@ var __generator =
   };
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
-var Profilepicture_1 = require('../../entity/Profilepicture');
+var User_1 = require('../../entity/User');
 function userGetProfileImage(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var connection, userId, user, profileImage;
+    var connection, userId, user;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
@@ -140,33 +140,16 @@ function userGetProfileImage(request, response) {
           userId = request.params.id;
           return [
             4 /*yield*/,
-            typeorm_1
-              .createQueryBuilder('User')
-              .leftJoinAndSelect(
-                'User.profilePicture',
-                'profilePicture',
-                'profilePicture.id = User.profilePicture'
-              )
-              .where('User.id = :id', {id: userId})
+            connection
+              .getRepository(User_1.User)
+              .createQueryBuilder('user')
+              .leftJoinAndSelect('user.profilePicture', 'image')
+              .where('user.id = :id', {id: userId})
               .getOne(),
           ];
         case 1:
           user = _a.sent();
-          return [
-            4 /*yield*/,
-            typeorm_1
-              .getRepository(Profilepicture_1.Profilepicture)
-              .createQueryBuilder('profileImage')
-              .setLock('optimistic', 1)
-              .select()
-              .where('profileImage.id = :id', {
-                id: user['profilePicture']['id'],
-              })
-              .getOne(),
-          ];
-        case 2:
-          profileImage = _a.sent();
-          response.status(200).json(profileImage);
+          response.status(200).json(user.profilePicture);
           return [2 /*return*/];
       }
     });

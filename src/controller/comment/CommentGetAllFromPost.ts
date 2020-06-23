@@ -11,6 +11,6 @@ export async function commentGetAllFromPost(request: Request, response: Response
     )
     //can't setLock Optimistic with get Many
     .getMany();
-  response.set(comments).status(200);
+  response.status(200).json(comments);
 
 }

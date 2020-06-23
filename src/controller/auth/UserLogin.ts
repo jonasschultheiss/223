@@ -18,7 +18,13 @@ export async function userLogin(request: Request, response: Response) {
   // establish real database connection using our new query runner
   await queryRunner.connect();
 
-  const databaseUser = await queryRunner.manager.findOne(User, {where: {username: sentUser}})
+  //const databaseUser = await queryRunner.manager.findOne(User, {where: {username: sentUser}})
+  const databaseUser = await connection
+    .getRepository(User)
+    .createQueryBuilder("user")
+    .select("user")
+    .where("user.username = :name", {name: sentUser})
+    .getOne()
 
   if (bcrypt.compare(clearPassword, databaseUser.password)){
     const userData = await connection
@@ -27,17 +33,19 @@ export async function userLogin(request: Request, response: Response) {
         .leftJoinAndSelect("user.role", "role")
         .where("username = :name", {name: sentUser})
         .getOne()
-    const profilePicture = await connection
-      .getRepository(Profilepicture)
-      .createQueryBuilder("profilePicture")
-      .select("profilePicture")
-      .where("profilePicture.id = :id", {id: userData.profilePicture.id})
-      .getOne()
+    const userProfile = await connection
+      .getRepository(User)
+      .createQueryBuilder("user")
+      .leftJoinAndSelect("user.profilePicture", "image")
+      .where("user.id = :id", {id: userData.id})
+      .getOne();
+
+
     const payload = {
       userId: userData.id,
       username: userData.username,
       role: userData.role.name,
-      profilePicture: profilePicture ? profilePicture.content : []
+      profilePicture: userProfile.profilePicture ? userProfile.profilePicture.content : []
     }
 
     const token_secret = process.env.JWT_SECRET || "abcdefghijklmnopqrstuvwxyz"
