@@ -8,23 +8,10 @@ import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 
 export async function userTest(request: Request, response: Response) {
+  const connection = getConnection();
 
-  if(request.body.roleId && request.body.userId){
-    const roleId = request.body.roleId
-    const userId = request.body.userId
 
-    await getConnection()
-      .createQueryBuilder()
-      .update(User)
-      .set({
-        role: roleId
-      })
-      .where("id = :id", { id: userId })
-      .execute();
-    response.status(200).json({message: "userrole set"})
-  }else{
-    response.status(500).json({message: "failed to set user role"})
-  }
+  response.status(200).json()
 
 
 }

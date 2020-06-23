@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import "dotenv"
 import {User} from '../../entity/User';
+import {Profilepicture} from "../../entity/Profilepicture";
 
 
 export async function userLogin(request: Request, response: Response) {
@@ -26,12 +27,17 @@ export async function userLogin(request: Request, response: Response) {
         .leftJoinAndSelect("user.role", "role")
         .where("username = :name", {name: sentUser})
         .getOne()
-
+    const profilePicture = await connection
+      .getRepository(Profilepicture)
+      .createQueryBuilder("profilePicture")
+      .select()
+      .where("profilePicture.user = :id", {id: userData.id})
+      .getOne()
     const payload = {
       userId: userData.id,
       username: userData.username,
       role: userData.role.name,
-      profilePicture: []
+      profilePicture: profilePicture.content
     }
 
     const token_secret = process.env.JWT_SECRET || "abcdefghijklmnopqrstuvwxyz"

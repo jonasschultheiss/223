@@ -133,6 +133,7 @@ var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 require('dotenv');
 var User_1 = require('../../entity/User');
+var Profilepicture_1 = require('../../entity/Profilepicture');
 function userLogin(request, response) {
   return __awaiter(this, void 0, void 0, function () {
     var sentUser,
@@ -141,6 +142,7 @@ function userLogin(request, response) {
       queryRunner,
       databaseUser,
       userData,
+      profilePicture,
       payload,
       token_secret,
       token;
@@ -165,7 +167,7 @@ function userLogin(request, response) {
         case 2:
           databaseUser = _a.sent();
           if (!bcrypt.compare(clearPassword, databaseUser.password))
-            return [3 /*break*/, 4];
+            return [3 /*break*/, 5];
           return [
             4 /*yield*/,
             connection
@@ -177,11 +179,22 @@ function userLogin(request, response) {
           ];
         case 3:
           userData = _a.sent();
+          return [
+            4 /*yield*/,
+            connection
+              .getRepository(Profilepicture_1.Profilepicture)
+              .createQueryBuilder('profilePicture')
+              .select()
+              .where('profilePicture.user = :id', {id: userData.id})
+              .getOne(),
+          ];
+        case 4:
+          profilePicture = _a.sent();
           payload = {
             userId: userData.id,
             username: userData.username,
             role: userData.role.name,
-            profilePicture: [],
+            profilePicture: profilePicture.content,
           };
           token_secret = process.env.JWT_SECRET || 'abcdefghijklmnopqrstuvwxyz';
           token = jwt.sign(JSON.stringify(payload), token_secret);
@@ -192,13 +205,13 @@ function userLogin(request, response) {
               message: 'Login success',
               access_token: token,
             });
-          return [3 /*break*/, 5];
-        case 4:
-          response.status(200).json({success: false, message: 'Login failed'});
-          _a.label = 5;
+          return [3 /*break*/, 6];
         case 5:
-          return [4 /*yield*/, queryRunner.release()];
+          response.status(200).json({success: false, message: 'Login failed'});
+          _a.label = 6;
         case 6:
+          return [4 /*yield*/, queryRunner.release()];
+        case 7:
           _a.sent();
           return [2 /*return*/];
       }
