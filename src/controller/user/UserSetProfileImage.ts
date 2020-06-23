@@ -15,25 +15,44 @@ export async function userSetProfileImage(
 
   // establish real database connection using our new query runner
   await queryRunner.connect();
-  const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}})
-  const user = await queryRunner.manager.findOne(User, {where: {id: request.body.user}})
+
+  //const user = await queryRunner.manager.findOne(User, {where: {id: request.body.user}})
+ const user = await createQueryBuilder("User")
+   .leftJoinAndSelect("User.profilePicture", "profilePicture", "profilePicture.id = User.profilePicture")
+   .where("User.id = :id", {id: request.body.user})
+   .getOne();
 
 
+  //const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{id: user.profilePicture.id}})
 
-  //const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}}) || new Profilepicture()
 
-  //profilePicture.content = request.body.content;
+  //let profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{id: user['profilePicture:']['id']}}) ||
+  const profilePicture = new Profilepicture()
+
   //profilePicture.user = request.body.user;
   // lets now open a new transaction:
   await queryRunner.startTransaction();
 
+  const databasePicture = await queryRunner.manager.getRepository(Profilepicture)
+    .createQueryBuilder("profilePicture")
+    .select()
+    .where("profilePicture.id = :id", { id: user['profilePicture']['id'] })
+    .getOne();
 
-  console.log(profilePicture)
   try {
-    if (profilePicture){
-      await queryRunner.manager.update(Profilepicture, { where: {user:  request.body.user}}, profilePicture);
+    if (databasePicture){
+      await queryRunner.manager.getRepository(Profilepicture)
+        .createQueryBuilder("profilePicture")
+        .useTransaction(true)
+        .update()
+        .set({
+          content: request.body.content
+        })
+        .where("profilePicture.id = :id", { id: user['profilePicture']['id'] })
+        .execute();
 
     }else{
+      profilePicture.content = request.body.content
       await queryRunner.manager.save(profilePicture);
     }
 

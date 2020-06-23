@@ -65,7 +65,7 @@ var User = /** @class */ (function () {
   );
   __decorate(
     [
-      typeorm_1.OneToMany(
+      typeorm_1.OneToOne(
         function (type) {
           return Profilepicture_1.Profilepicture;
         },
@@ -73,7 +73,8 @@ var User = /** @class */ (function () {
           return profilePicture.user;
         }
       ),
-      __metadata('design:type', Array),
+      typeorm_1.JoinColumn(),
+      __metadata('design:type', Profilepicture_1.Profilepicture),
     ],
     User.prototype,
     'profilePicture',

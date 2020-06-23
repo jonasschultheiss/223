@@ -55,7 +55,7 @@ var Profilepicture = /** @class */ (function () {
   );
   __decorate(
     [
-      typeorm_1.ManyToOne(
+      typeorm_1.OneToOne(
         function (type) {
           return User_1.User;
         },

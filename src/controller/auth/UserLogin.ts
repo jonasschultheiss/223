@@ -31,7 +31,7 @@ export async function userLogin(request: Request, response: Response) {
       .getRepository(Profilepicture)
       .createQueryBuilder("profilePicture")
       .select()
-      .where("profilePicture.user = :id", {id: userData.id})
+      .where("profilePicture.id = :id", {id: userData.profilePicture.id})
       .getOne()
     const payload = {
       userId: userData.id,

@@ -185,7 +185,9 @@ function userLogin(request, response) {
               .getRepository(Profilepicture_1.Profilepicture)
               .createQueryBuilder('profilePicture')
               .select()
-              .where('profilePicture.user = :id', {id: userData.id})
+              .where('profilePicture.id = :id', {
+                id: userData.profilePicture.id,
+              })
               .getOne(),
           ];
         case 4:

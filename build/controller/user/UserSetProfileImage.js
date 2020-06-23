@@ -129,15 +129,15 @@ var __generator =
   };
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
-var User_1 = require('../../entity/User');
+var typeorm_2 = require('typeorm');
 var Profilepicture_1 = require('../../entity/Profilepicture');
 function userSetProfileImage(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var connection, queryRunner, profilePicture, user, err_1;
+    var connection, queryRunner, user, profilePicture, databasePicture, err_1;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          connection = typeorm_1.getConnection();
+          connection = typeorm_2.getConnection();
           queryRunner = connection.createQueryRunner();
           // establish real database connection using our new query runner
           return [4 /*yield*/, queryRunner.connect()];
@@ -146,52 +146,63 @@ function userSetProfileImage(request, response) {
           _a.sent();
           return [
             4 /*yield*/,
-            queryRunner.manager.findOne(Profilepicture_1.Profilepicture, {
-              where: {user: request.body.user},
-            }),
+            typeorm_1
+              .createQueryBuilder('User')
+              .leftJoinAndSelect(
+                'User.profilePicture',
+                'profilePicture',
+                'profilePicture.id = User.profilePicture'
+              )
+              .where('User.id = :id', {id: request.body.user})
+              .getOne(),
           ];
         case 2:
-          profilePicture = _a.sent();
-          return [
-            4 /*yield*/,
-            queryRunner.manager.findOne(User_1.User, {
-              where: {id: request.body.user},
-            }),
-            //const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}}) || new Profilepicture()
-            //profilePicture.content = request.body.content;
-            //profilePicture.user = request.body.user;
-            // lets now open a new transaction:
-          ];
-        case 3:
           user = _a.sent();
-          //const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}}) || new Profilepicture()
-          //profilePicture.content = request.body.content;
+          profilePicture = new Profilepicture_1.Profilepicture();
           //profilePicture.user = request.body.user;
           // lets now open a new transaction:
           return [4 /*yield*/, queryRunner.startTransaction()];
-        case 4:
-          //const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}}) || new Profilepicture()
-          //profilePicture.content = request.body.content;
+        case 3:
           //profilePicture.user = request.body.user;
           // lets now open a new transaction:
           _a.sent();
-          console.log(profilePicture);
+          return [
+            4 /*yield*/,
+            queryRunner.manager
+              .getRepository(Profilepicture_1.Profilepicture)
+              .createQueryBuilder('profilePicture')
+              .select()
+              .where('profilePicture.id = :id', {
+                id: user['profilePicture']['id'],
+              })
+              .getOne(),
+          ];
+        case 4:
+          databasePicture = _a.sent();
           _a.label = 5;
         case 5:
           _a.trys.push([5, 11, 13, 15]);
-          if (!profilePicture) return [3 /*break*/, 7];
+          if (!databasePicture) return [3 /*break*/, 7];
           return [
             4 /*yield*/,
-            queryRunner.manager.update(
-              Profilepicture_1.Profilepicture,
-              {where: {user: request.body.user}},
-              profilePicture
-            ),
+            queryRunner.manager
+              .getRepository(Profilepicture_1.Profilepicture)
+              .createQueryBuilder('profilePicture')
+              .useTransaction(true)
+              .update()
+              .set({
+                content: request.body.content,
+              })
+              .where('profilePicture.id = :id', {
+                id: user['profilePicture']['id'],
+              })
+              .execute(),
           ];
         case 6:
           _a.sent();
           return [3 /*break*/, 9];
         case 7:
+          profilePicture.content = request.body.content;
           return [4 /*yield*/, queryRunner.manager.save(profilePicture)];
         case 8:
           _a.sent();

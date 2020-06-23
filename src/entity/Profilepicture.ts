@@ -26,6 +26,6 @@ export class Profilepicture {
   @Column('text')
   content: string;
 
-  @ManyToOne(type => User, user => user.profilePicture)
+  @OneToOne(type => User, user => user.profilePicture)
   user: User;
 }

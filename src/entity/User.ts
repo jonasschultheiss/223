@@ -31,8 +31,9 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(type => Profilepicture, profilePicture => profilePicture.user)
-  profilePicture: Profilepicture[];
+  @OneToOne(type => Profilepicture, profilePicture => profilePicture.user)
+  @JoinColumn()
+  profilePicture: Profilepicture;
 
   @ManyToOne(type => Role, role => role.user)
   role: Role;
