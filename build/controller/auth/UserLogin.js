@@ -194,7 +194,7 @@ function userLogin(request, response) {
             userId: userData.id,
             username: userData.username,
             role: userData.role.name,
-            profilePicture: profilePicture.content,
+            profilePicture: profilePicture.content || [],
           };
           token_secret = process.env.JWT_SECRET || 'abcdefghijklmnopqrstuvwxyz';
           token = jwt.sign(JSON.stringify(payload), token_secret);
