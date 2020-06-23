@@ -184,7 +184,7 @@ function userLogin(request, response) {
             connection
               .getRepository(Profilepicture_1.Profilepicture)
               .createQueryBuilder('profilePicture')
-              .select()
+              .select('profilePicture')
               .where('profilePicture.id = :id', {
                 id: userData.profilePicture.id,
               })

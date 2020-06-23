@@ -132,13 +132,26 @@ var typeorm_1 = require('typeorm');
 var Profilepicture_1 = require('../../entity/Profilepicture');
 function userGetProfileImage(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var connection, queryRunner, userId, profileImage;
+    var connection, userId, user, profileImage;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
           connection = typeorm_1.getConnection();
-          queryRunner = connection.createQueryRunner();
           userId = request.params.id;
+          return [
+            4 /*yield*/,
+            typeorm_1
+              .createQueryBuilder('User')
+              .leftJoinAndSelect(
+                'User.profilePicture',
+                'profilePicture',
+                'profilePicture.id = User.profilePicture'
+              )
+              .where('User.id = :id', {id: userId})
+              .getOne(),
+          ];
+        case 1:
+          user = _a.sent();
           return [
             4 /*yield*/,
             typeorm_1
@@ -146,10 +159,12 @@ function userGetProfileImage(request, response) {
               .createQueryBuilder('profileImage')
               .setLock('optimistic', 1)
               .select()
-              .where('profileImage.user = :id', {id: userId})
+              .where('profileImage.id = :id', {
+                id: user['profilePicture']['id'],
+              })
               .getOne(),
           ];
-        case 1:
+        case 2:
           profileImage = _a.sent();
           response.status(200).json(profileImage);
           return [2 /*return*/];

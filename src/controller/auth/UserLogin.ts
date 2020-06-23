@@ -30,7 +30,7 @@ export async function userLogin(request: Request, response: Response) {
     const profilePicture = await connection
       .getRepository(Profilepicture)
       .createQueryBuilder("profilePicture")
-      .select()
+      .select("profilePicture")
       .where("profilePicture.id = :id", {id: userData.profilePicture.id})
       .getOne()
     const payload = {
