@@ -62,8 +62,8 @@ export const AppRoutes = [
     action: userGetRole,
   },
   {
-    path: '/user/role/:id',
-    method: 'set',
+    path: '/user/role',
+    method: 'post',
     action: userSetRole,
   },
   {

@@ -59,8 +59,8 @@ exports.AppRoutes = [
     action: UserGetRole_1.userGetRole,
   },
   {
-    path: '/user/role/:id',
-    method: 'set',
+    path: '/user/role',
+    method: 'post',
     action: UserSetRole_1.userSetRole,
   },
   {

@@ -4,7 +4,7 @@ import {Comment} from '../../entity/Comment';
 
 export async function commentGetFromUser(request: Request, response: Response) {
   const connection = await getConnection();
-  const queryRunner = await connection.createQueryRunner();
+
   const userId = request.params.id;
 
   //TODO: maybe implement JWT Token with check

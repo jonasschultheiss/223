@@ -156,14 +156,14 @@ function userDelete(request, response) {
               .createQueryBuilder()
               .delete()
               .from(User_1.User)
-              .where('user = :id', {
+              .where('id = :id', {
                 id: data.userId,
               })
               .execute(),
           ];
         case 1:
           _a.sent();
-          response.status(200).json({message: 'image successfully deleted'});
+          response.status(200).json({message: 'user successfully deleted'});
           _a.label = 2;
         case 2:
           return [3 /*break*/, 4];

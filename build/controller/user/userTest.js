@@ -130,124 +130,37 @@ var __generator =
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
 var User_1 = require('../../entity/User');
-var Role_1 = require('../../entity/Role');
 require('dotenv');
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcrypt');
 function userTest(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var user,
-      _a,
-      connection,
-      queryRunner,
-      databaseUser,
-      userRole,
-      err_1,
-      createdUser,
-      payload,
-      token_secret,
-      token;
-    return __generator(this, function (_b) {
-      switch (_b.label) {
+    var roleId, userId;
+    return __generator(this, function (_a) {
+      switch (_a.label) {
         case 0:
-          user = new User_1.User();
-          user.username = request.body.username;
-          _a = user;
-          return [4 /*yield*/, bcrypt.hash(request.body.password, 10)];
+          if (!(request.body.roleId && request.body.userId))
+            return [3 /*break*/, 2];
+          roleId = request.body.roleId;
+          userId = request.body.userId;
+          return [
+            4 /*yield*/,
+            typeorm_1
+              .getConnection()
+              .createQueryBuilder()
+              .update(User_1.User)
+              .set({
+                role: roleId,
+              })
+              .where('id = :id', {id: userId})
+              .execute(),
+          ];
         case 1:
-          _a.password = _b.sent();
-          connection = typeorm_1.getConnection();
-          queryRunner = connection.createQueryRunner();
-          // establish real database connection using our new query runner
-          return [4 /*yield*/, queryRunner.connect()];
+          _a.sent();
+          response.status(200).json({message: 'userrole set'});
+          return [3 /*break*/, 3];
         case 2:
-          // establish real database connection using our new query runner
-          _b.sent();
-          return [
-            4 /*yield*/,
-            queryRunner.manager.find(User_1.User, {
-              where: {username: user.username},
-            }),
-          ];
+          response.status(500).json({message: 'failed to set user role'});
+          _a.label = 3;
         case 3:
-          databaseUser = _b.sent();
-          return [
-            4 /*yield*/,
-            queryRunner.manager.find(Role_1.Role, {where: {id: 1}}),
-          ];
-        case 4:
-          userRole = _b.sent();
-          user.role = userRole.find(function (role) {
-            return role.id === 1;
-          });
-          //const defaultProfilePicture = await queryRunner.manager.find(Profilepicture, {where:{id:1}})
-          //user.profilePicture = defaultProfilePicture
-          //console.log(user)
-          // lets now open a new transaction:
-          return [4 /*yield*/, queryRunner.startTransaction()];
-        case 5:
-          //const defaultProfilePicture = await queryRunner.manager.find(Profilepicture, {where:{id:1}})
-          //user.profilePicture = defaultProfilePicture
-          //console.log(user)
-          // lets now open a new transaction:
-          _b.sent();
-          if (!(Object.keys(databaseUser).length !== 0))
-            return [3 /*break*/, 6];
-          response.status(500).send('Username taken');
-          return [2 /*return*/];
-        case 6:
-          _b.trys.push([6, 9, , 11]);
-          // execute some operations on this transaction:
-          return [4 /*yield*/, queryRunner.manager.save(user)];
-        case 7:
-          // execute some operations on this transaction:
-          _b.sent();
-          // commit transaction now:
-          return [4 /*yield*/, queryRunner.commitTransaction()];
-        case 8:
-          // commit transaction now:
-          _b.sent();
-          return [3 /*break*/, 11];
-        case 9:
-          err_1 = _b.sent();
-          // since we have errors let's rollback changes we made
-          return [4 /*yield*/, queryRunner.rollbackTransaction()];
-        case 10:
-          // since we have errors let's rollback changes we made
-          _b.sent();
-          response.status(500).send();
-          return [2 /*return*/];
-        case 11:
-          return [
-            4 /*yield*/,
-            queryRunner.manager.findOne(User_1.User, {
-              where: {username: user.username},
-            }),
-          ];
-        case 12:
-          createdUser = _b.sent();
-          createdUser.role = userRole.find(function (role) {
-            return role.id === 1;
-          });
-          createdUser.profilePicture = null;
-          payload = {
-            userId: createdUser.id,
-            username: createdUser.username,
-            role: createdUser.role.name,
-            profilePicture: [],
-          };
-          token_secret = process.env.JWT_SECRET || 'abcdefghijklmnopqrstuvwxyz';
-          token = jwt.sign(JSON.stringify(payload), token_secret);
-          response
-            .status(200)
-            .json({message: 'new account created', access_token: token});
-          // you need to release query runner which is manually created:
-          return [4 /*yield*/, queryRunner.release()];
-        case 13:
-          // you need to release query runner which is manually created:
-          _b.sent();
-          _b.label = 14;
-        case 14:
           return [2 /*return*/];
       }
     });

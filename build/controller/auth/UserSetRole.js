@@ -129,58 +129,37 @@ var __generator =
   };
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
-var Role_1 = require('../../entity/Role');
+var User_1 = require('../../entity/User');
 function userSetRole(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var role, connection, queryRunner, err_1;
+    var roleId, userId;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          role = new Role_1.Role();
-          connection = typeorm_1.getConnection();
-          queryRunner = connection.createQueryRunner();
-          // establish real database connection using our new query runner
-          return [4 /*yield*/, queryRunner.connect()];
+          if (!(request.body.roleId && request.body.userId))
+            return [3 /*break*/, 2];
+          roleId = request.body.roleId;
+          userId = request.body.userId;
+          return [
+            4 /*yield*/,
+            typeorm_1
+              .getConnection()
+              .createQueryBuilder()
+              .update(User_1.User)
+              .set({
+                role: roleId,
+              })
+              .where('id = :id', {id: userId})
+              .execute(),
+          ];
         case 1:
-          // establish real database connection using our new query runner
           _a.sent();
-          // lets now open a new transaction:
-          return [4 /*yield*/, queryRunner.startTransaction()];
+          response.status(200).json({message: 'userrole set'});
+          return [3 /*break*/, 3];
         case 2:
-          // lets now open a new transaction:
-          _a.sent();
+          response.status(500).json({message: 'failed to set user role'});
           _a.label = 3;
         case 3:
-          _a.trys.push([3, 5, 7, 9]);
-          //TODO: Add transaction
-          // execute some operations on this transaction:
-          //await queryRunner.manager.save(profilePicture);
-          // commit transaction now:
-          return [4 /*yield*/, queryRunner.commitTransaction()];
-        case 4:
-          //TODO: Add transaction
-          // execute some operations on this transaction:
-          //await queryRunner.manager.save(profilePicture);
-          // commit transaction now:
-          _a.sent();
-          return [3 /*break*/, 9];
-        case 5:
-          err_1 = _a.sent();
-          // since we have errors let's rollback changes we made
-          return [4 /*yield*/, queryRunner.rollbackTransaction()];
-        case 6:
-          // since we have errors let's rollback changes we made
-          _a.sent();
-          return [3 /*break*/, 9];
-        case 7:
-          // you need to release query runner which is manually created:
-          return [4 /*yield*/, queryRunner.release()];
-        case 8:
-          // you need to release query runner which is manually created:
-          _a.sent();
-          return [7 /*endfinally*/];
-        case 9:
-          response.status(200).send();
           return [2 /*return*/];
       }
     });

@@ -136,13 +136,13 @@ function commentGetAllFromPost(request, response) {
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          postId = request.body.postId;
+          postId = request.params.id;
           return [
             4 /*yield*/,
             typeorm_1
               .getRepository(Comment_1.Comment)
               .createQueryBuilder('comment')
-              .where('comment.id=:id', {id: postId})
+              .where('comment.image=:id', {id: postId})
               //can't setLock Optimistic with get Many
               .getMany(),
           ];
