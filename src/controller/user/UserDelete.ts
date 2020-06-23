@@ -15,8 +15,8 @@ export async function userDelete(request: Request, response: Response) {
         .createQueryBuilder()
         .delete()
         .from(User)
-        .where('user = :id', {
-          id: sentData.userId,
+        .where('id = :id', {
+          id: data.userId,
         })
         .execute();
 
