@@ -147,7 +147,7 @@ typeorm_1
       var app, port;
       return __generator(this, function (_a) {
         app = express();
-        app.use(bodyParser.json());
+        app.use(bodyParser.json({limit: '50mb'}));
         app.use(cors());
         // register all application routes
         routes_1.AppRoutes.forEach(function (route) {

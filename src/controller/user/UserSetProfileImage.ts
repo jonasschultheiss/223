@@ -8,6 +8,7 @@ export async function userSetProfileImage(
   request: Request,
   response: Response
 ) {
+
   const profilePicture = new Profilepicture();
   profilePicture.content = request.body.content;
   profilePicture.user = request.body.user;
