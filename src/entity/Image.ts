@@ -5,7 +5,7 @@ import {
   VersionColumn,
   UpdateDateColumn,
   ManyToOne,
-  OneToMany,
+  OneToMany, JoinColumn,
 } from 'typeorm';
 import {User} from './User';
 import {Comment} from './Comment';

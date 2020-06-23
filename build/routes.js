@@ -22,6 +22,7 @@ var CommentGetFromUser_1 = require('./controller/comment/CommentGetFromUser');
 var UserGetRole_1 = require('./controller/auth/UserGetRole');
 var UserSetRole_1 = require('./controller/auth/UserSetRole');
 var CommentGetAllFromPost_1 = require('./controller/comment/CommentGetAllFromPost');
+var ImageGetLikeCount_1 = require('./controller/image/ImageGetLikeCount');
 exports.AppRoutes = [
   {
     path: '/login',
@@ -87,6 +88,11 @@ exports.AppRoutes = [
     path: '/image/:id',
     method: 'get',
     action: ImageGetOne_1.imageGetOne,
+  },
+  {
+    path: '/image/like/:id',
+    method: 'get',
+    action: ImageGetLikeCount_1.imageGetLikeCount,
   },
   {
     path: '/image/like',

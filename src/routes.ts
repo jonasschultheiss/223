@@ -24,6 +24,7 @@ import {commentGetFromUser} from './controller/comment/CommentGetFromUser';
 import {userGetRole} from './controller/auth/UserGetRole';
 import {userSetRole} from './controller/auth/UserSetRole';
 import {commentGetAllFromPost} from "./controller/comment/CommentGetAllFromPost";
+import {imageGetLikeCount} from "./controller/image/ImageGetLikeCount";
 
 export const AppRoutes = [
   {
@@ -90,6 +91,11 @@ export const AppRoutes = [
     path: '/image/:id',
     method: 'get',
     action: imageGetOne,
+  },
+  {
+    path: '/image/like/:id',
+    method: 'get',
+    action: imageGetLikeCount,
   },
   {
     path: '/image/like',

@@ -132,12 +132,21 @@ var typeorm_1 = require('typeorm');
 require('dotenv');
 function userTest(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var page, skip, images;
+    var page, skip, test, images;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
           page = request.query.page || 1;
           skip = request.query.page === '1' ? 0 : Number(page) * 10;
+          return [
+            4 /*yield*/,
+            typeorm_1
+              .createQueryBuilder('Like')
+              .leftJoinAndSelect('Like.user', 'user')
+              .getMany(),
+          ];
+        case 1:
+          test = _a.sent();
           return [
             4 /*yield*/,
             typeorm_1
@@ -149,9 +158,9 @@ function userTest(request, response) {
               .orderBy('Image.updateDate', 'DESC')
               .getMany(),
           ];
-        case 1:
+        case 2:
           images = _a.sent();
-          response.status(200).json(images);
+          response.status(200).json(test);
           return [2 /*return*/];
       }
     });

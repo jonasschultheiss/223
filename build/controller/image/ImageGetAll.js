@@ -142,6 +142,7 @@ function imageGetAll(request, response) {
             typeorm_1
               .createQueryBuilder('Image')
               .leftJoinAndSelect('Image.user', 'user')
+              .leftJoinAndSelect('Image.like', 'like')
               .offset(skip)
               .limit(10)
               .orderBy('Image.updateDate', 'DESC')
@@ -149,7 +150,6 @@ function imageGetAll(request, response) {
           ];
         case 1:
           images = _a.sent();
-          //can't setLock Optimistic with get Many
           response.status(200).json(images);
           return [2 /*return*/];
       }
