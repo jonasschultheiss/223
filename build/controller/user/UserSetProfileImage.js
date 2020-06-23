@@ -129,15 +129,15 @@ var __generator =
   };
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
-var typeorm_2 = require('typeorm');
+var User_1 = require('../../entity/User');
 var Profilepicture_1 = require('../../entity/Profilepicture');
 function userSetProfileImage(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var connection, queryRunner, profilePicture, err_1;
+    var connection, queryRunner, profilePicture, user, err_1;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          connection = typeorm_2.getConnection();
+          connection = typeorm_1.getConnection();
           queryRunner = connection.createQueryRunner();
           // establish real database connection using our new query runner
           return [4 /*yield*/, queryRunner.connect()];
@@ -146,30 +146,40 @@ function userSetProfileImage(request, response) {
           _a.sent();
           return [
             4 /*yield*/,
-            typeorm_1
-              .createQueryBuilder('Profilepicture')
-              .leftJoinAndSelect('Profilepicture.user', 'user')
-              .where('user.id = :id', {id: '17'})
-              .getOne(),
+            queryRunner.manager.findOne(Profilepicture_1.Profilepicture, {
+              where: {user: request.body.user},
+            }),
           ];
         case 2:
           profilePicture = _a.sent();
+          return [
+            4 /*yield*/,
+            queryRunner.manager.findOne(User_1.User, {
+              where: {id: request.body.user},
+            }),
+            //const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}}) || new Profilepicture()
+            //profilePicture.content = request.body.content;
+            //profilePicture.user = request.body.user;
+            // lets now open a new transaction:
+          ];
+        case 3:
+          user = _a.sent();
           //const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}}) || new Profilepicture()
           //profilePicture.content = request.body.content;
           //profilePicture.user = request.body.user;
           // lets now open a new transaction:
           return [4 /*yield*/, queryRunner.startTransaction()];
-        case 3:
+        case 4:
           //const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}}) || new Profilepicture()
           //profilePicture.content = request.body.content;
           //profilePicture.user = request.body.user;
           // lets now open a new transaction:
           _a.sent();
           console.log(profilePicture);
-          _a.label = 4;
-        case 4:
-          _a.trys.push([4, 10, 12, 14]);
-          if (!profilePicture) return [3 /*break*/, 6];
+          _a.label = 5;
+        case 5:
+          _a.trys.push([5, 11, 13, 15]);
+          if (!profilePicture) return [3 /*break*/, 7];
           return [
             4 /*yield*/,
             queryRunner.manager.update(
@@ -178,39 +188,39 @@ function userSetProfileImage(request, response) {
               profilePicture
             ),
           ];
-        case 5:
-          _a.sent();
-          return [3 /*break*/, 8];
         case 6:
-          return [4 /*yield*/, queryRunner.manager.save(profilePicture)];
-        case 7:
           _a.sent();
-          _a.label = 8;
+          return [3 /*break*/, 9];
+        case 7:
+          return [4 /*yield*/, queryRunner.manager.save(profilePicture)];
         case 8:
+          _a.sent();
+          _a.label = 9;
+        case 9:
           // commit transaction now:
           return [4 /*yield*/, queryRunner.commitTransaction()];
-        case 9:
+        case 10:
           // commit transaction now:
           _a.sent();
           response.status(200).json({message: 'success'});
-          return [3 /*break*/, 14];
-        case 10:
+          return [3 /*break*/, 15];
+        case 11:
           err_1 = _a.sent();
           // since we have errors let's rollback changes we made
           return [4 /*yield*/, queryRunner.rollbackTransaction()];
-        case 11:
+        case 12:
           // since we have errors let's rollback changes we made
           _a.sent();
           response.status(500).json({message: 'something went wrong!'});
-          return [3 /*break*/, 14];
-        case 12:
+          return [3 /*break*/, 15];
+        case 13:
           // you need to release query runner which is manually created:
           return [4 /*yield*/, queryRunner.release()];
-        case 13:
+        case 14:
           // you need to release query runner which is manually created:
           _a.sent();
           return [7 /*endfinally*/];
-        case 14:
+        case 15:
           return [2 /*return*/];
       }
     });

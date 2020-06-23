@@ -140,7 +140,7 @@ function imageCreateNew(request, response) {
           data = request.body;
           if (!request.headers.authorization) return [3 /*break*/, 2];
           authHeader = request.headers.authorization;
-          token = JSON.parse(authHeader).split(' ')[1];
+          token = JSON.parse(authHeader.split(' ')[1]);
           sentData = jwt.decode(token);
           return [
             4 /*yield*/,

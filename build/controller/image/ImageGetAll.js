@@ -142,7 +142,6 @@ function imageGetAll(request, response) {
             typeorm_1
               .createQueryBuilder('Image')
               .leftJoinAndSelect('Image.user', 'user')
-              .where('user.id = :id', {id: '17'})
               .offset(skip)
               .limit(10)
               .orderBy('Image.updateDate', 'DESC')

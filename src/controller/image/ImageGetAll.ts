@@ -9,7 +9,6 @@ export async function imageGetAll(request: Request, response: Response) {
 
   const images = await createQueryBuilder("Image")
     .leftJoinAndSelect("Image.user", "user")
-    .where("user.id = :id", { id: "17" })
     .offset(skip)
     .limit(10)
     .orderBy("Image.updateDate" , "DESC")

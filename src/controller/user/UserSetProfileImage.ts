@@ -15,10 +15,8 @@ export async function userSetProfileImage(
 
   // establish real database connection using our new query runner
   await queryRunner.connect();
-  const profilePicture = await createQueryBuilder("Profilepicture")
-    .leftJoinAndSelect("Profilepicture.user", "user")
-    .where("user.id = :id", { id: "17" })
-    .getOne();
+  const profilePicture = await queryRunner.manager.findOne(Profilepicture, {where:{user: request.body.user}})
+  const user = await queryRunner.manager.findOne(User, {where: {id: request.body.user}})
 
 
 
