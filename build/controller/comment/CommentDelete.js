@@ -150,9 +150,8 @@ function commentDelete(request, response) {
               .createQueryBuilder()
               .delete()
               .from(Comment_1.Comment)
-              .where('user = :id')
+              .where('user = :id', {id: sentData.userId})
               .andWhere('comment = :commentId', {
-                id: sentData.userId,
                 commentId: request.body.commentId,
               })
               .execute(),

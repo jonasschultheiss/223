@@ -140,7 +140,7 @@ export const AppRoutes = [
     action: commentGetAllFromPost,
   },
   {
-    path: '/comment/id',
+    path: '/comment/:id',
     method: 'delete',
     action: commentDelete,
   },

@@ -15,10 +15,9 @@ export async function commentDelete(request: Request, response: Response) {
         .createQueryBuilder()
         .delete()
         .from(Comment)
-        .where('user = :id')
+        .where('user = :id',{id: sentData.userId})
         .andWhere('comment = :commentId', {
-          id: sentData.userId,
-          commentId: request.body.commentId,
+          commentId: request.body.commentId
         })
         .execute();
 

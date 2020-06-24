@@ -135,7 +135,7 @@ exports.AppRoutes = [
     action: CommentGetAllFromPost_1.commentGetAllFromPost,
   },
   {
-    path: '/comment/id',
+    path: '/comment/:id',
     method: 'delete',
     action: CommentDelete_1.commentDelete,
   },
