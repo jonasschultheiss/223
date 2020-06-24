@@ -14,7 +14,7 @@ export async function commentGetFromUser(request: Request, response: Response) {
     .createQueryBuilder('comment')
     .leftJoinAndSelect("comment.user", "user")
     .where(
-      "comment.user=:id", {id: 17}
+      "comment.user=:id", {id: userId}
     )
     //can't setLock Optimistic with get Many
     .getMany();

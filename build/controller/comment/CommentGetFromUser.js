@@ -146,7 +146,7 @@ function commentGetFromUser(request, response) {
               .getRepository(Comment_1.Comment)
               .createQueryBuilder('comment')
               .leftJoinAndSelect('comment.user', 'user')
-              .where('comment.user=:id', {id: 17})
+              .where('comment.user=:id', {id: userId})
               //can't setLock Optimistic with get Many
               .getMany(),
           ];
