@@ -10,23 +10,22 @@ import {Image} from "../../entity/Image";
 import {Comment} from "../../entity/Comment";
 
 export async function userTest(request: Request, response: Response) {
-
+  const data = request.body;
   const page = request.query.page || 1
   const skip = (request.query.page === "1" ) ? 0 :Number(page) * 10
 
-  const test = await createQueryBuilder("Like")
-    .leftJoinAndSelect("Like.user", "user")
-    .getMany()
+  const test = await getManager()
+    .createQueryBuilder()
+    .setLock('optimistic', 1)
+    .insert()
+    .into(Image)
+    .values({
+      title: "data.text",
+      content: "data.imageText",
+      user: data.userId,
+    })
+    .execute();
 
-
-  const images = await createQueryBuilder("Image")
-    .leftJoinAndSelect("Image.user", "user")
-    .leftJoinAndSelect("Image.like", "like")
-    .offset(skip)
-    .limit(10)
-    .orderBy("Image.updateDate" , "DESC")
-    .getMany();
-
-  response.status(200).json(test);
+  response.status(200).json(test.identifiers[0].id);
 
 }

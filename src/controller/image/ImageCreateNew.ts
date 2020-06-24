@@ -10,7 +10,7 @@ export async function imageCreateNew(request: Request, response: Response) {
     const authHeader = request.headers.authorization;
     const token = JSON.parse(authHeader.split(' ')[1]);
     const sentData = jwt.decode(token);
-    await getManager()
+    const createdImageId = await getManager()
       .createQueryBuilder()
       .setLock('optimistic', 1)
       .insert()
@@ -22,7 +22,7 @@ export async function imageCreateNew(request: Request, response: Response) {
       })
       .execute();
 
-    response.status(203).json({test: 'test'});
+    response.status(203).json(createdImageId.identifiers[0].id);
   } else {
     response.status(401).json({message: 'no auth token in header'});
   }

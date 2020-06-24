@@ -130,37 +130,34 @@ var __generator =
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
 require('dotenv');
+var Image_1 = require('../../entity/Image');
 function userTest(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var page, skip, test, images;
+    var data, page, skip, test;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
+          data = request.body;
           page = request.query.page || 1;
           skip = request.query.page === '1' ? 0 : Number(page) * 10;
           return [
             4 /*yield*/,
             typeorm_1
-              .createQueryBuilder('Like')
-              .leftJoinAndSelect('Like.user', 'user')
-              .getMany(),
+              .getManager()
+              .createQueryBuilder()
+              .setLock('optimistic', 1)
+              .insert()
+              .into(Image_1.Image)
+              .values({
+                title: 'data.text',
+                content: 'data.imageText',
+                user: data.userId,
+              })
+              .execute(),
           ];
         case 1:
           test = _a.sent();
-          return [
-            4 /*yield*/,
-            typeorm_1
-              .createQueryBuilder('Image')
-              .leftJoinAndSelect('Image.user', 'user')
-              .leftJoinAndSelect('Image.like', 'like')
-              .offset(skip)
-              .limit(10)
-              .orderBy('Image.updateDate', 'DESC')
-              .getMany(),
-          ];
-        case 2:
-          images = _a.sent();
-          response.status(200).json(test);
+          response.status(200).json(test.identifiers[0].id);
           return [2 /*return*/];
       }
     });

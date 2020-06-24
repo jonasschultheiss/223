@@ -133,7 +133,7 @@ var Image_1 = require('../../entity/Image');
 var jwt = require('jsonwebtoken');
 function imageCreateNew(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var data, authHeader, token, sentData;
+    var data, authHeader, token, sentData, createdImageId;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
@@ -158,8 +158,8 @@ function imageCreateNew(request, response) {
               .execute(),
           ];
         case 1:
-          _a.sent();
-          response.status(203).json({test: 'test'});
+          createdImageId = _a.sent();
+          response.status(203).json(createdImageId.identifiers[0].id);
           return [3 /*break*/, 3];
         case 2:
           response.status(401).json({message: 'no auth token in header'});
