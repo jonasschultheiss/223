@@ -12,7 +12,7 @@ export async function commentGetFromUser(request: Request, response: Response) {
   const comments = await connection
     .getRepository(Comment)
     .createQueryBuilder('comment')
-    .leftJoinAndSelect("comment.user", "user")
+    .leftJoinAndSelect("comment.image", "user")
     .where(
       "comment.user=:id", {id: userId}
     )

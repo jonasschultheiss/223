@@ -133,19 +133,19 @@ require('dotenv');
 var Comment_1 = require('../../entity/Comment');
 function userTest(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var postId, connection, comments;
+    var userId, connection, comments;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          postId = request.params.id;
+          userId = request.params.id;
           connection = typeorm_1.getConnection();
           return [
             4 /*yield*/,
             connection
               .getRepository(Comment_1.Comment)
               .createQueryBuilder('comment')
-              .leftJoinAndSelect('comment.user', 'user')
-              .where('comment.user=:id', {id: 17})
+              .leftJoinAndSelect('comment.image', 'user')
+              .where('comment.user=:id', {id: userId})
               //can't setLock Optimistic with get Many
               .getMany(),
           ];

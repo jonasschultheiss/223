@@ -145,7 +145,7 @@ function commentGetFromUser(request, response) {
             connection
               .getRepository(Comment_1.Comment)
               .createQueryBuilder('comment')
-              .leftJoinAndSelect('comment.user', 'user')
+              .leftJoinAndSelect('comment.image', 'user')
               .where('comment.user=:id', {id: userId})
               //can't setLock Optimistic with get Many
               .getMany(),

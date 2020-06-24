@@ -12,14 +12,14 @@ import {Comment} from "../../entity/Comment";
 export async function userTest(request: Request, response: Response) {
 
 
-  const postId = request.params.id
+  const userId = request.params.id
   const connection = getConnection()
   const comments = await connection
     .getRepository(Comment)
     .createQueryBuilder('comment')
-    .leftJoinAndSelect("comment.user", "user")
+    .leftJoinAndSelect("comment.image", "user")
     .where(
-      "comment.user=:id", {id: 17}
+      "comment.user=:id", {id: userId}
     )
     //can't setLock Optimistic with get Many
     .getMany();
