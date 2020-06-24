@@ -22,8 +22,8 @@ export async function userTest(request: Request, response: Response) {
     .where("User.id = :id", { id: userId })
     .getOne()
 
-  console.log(databaseImage)
-  if(databaseImage.profilePicture === null){
+
+  if(databaseImage.profilePicture == null){
     const newProfileIamge = new Profilepicture()
     newProfileIamge.user = await getRepository(User)
       .createQueryBuilder("user")
@@ -42,14 +42,15 @@ export async function userTest(request: Request, response: Response) {
         user: newProfileIamge.user.id
       })
       .execute()
-
+    console.log(insertedImage)
     await getConnection()
       .createQueryBuilder()
       .update(User)
       .set({
-        profilePicture: insertedImage.identifiers[0].id
+        profilePicture: insertedImage.raw[0]
       })
       .where("id = :id", {id: userId})
+      .execute()
 
     response.status(200).json({message:"we did a new one"})
   }else{

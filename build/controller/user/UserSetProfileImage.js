@@ -128,12 +128,106 @@ var __generator =
     }
   };
 Object.defineProperty(exports, '__esModule', {value: true});
+var typeorm_1 = require('typeorm');
+var typeorm_2 = require('typeorm');
+var User_1 = require('../../entity/User');
+var Profilepicture_1 = require('../../entity/Profilepicture');
 function userSetProfileImage(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var body;
-    return __generator(this, function (_a) {
-      body = request.body;
-      return [2 /*return*/];
+    var data,
+      userId,
+      content,
+      databaseImage,
+      newProfileIamge,
+      _a,
+      insertedImage,
+      blah;
+    return __generator(this, function (_b) {
+      switch (_b.label) {
+        case 0:
+          data = request.body;
+          userId = data.userId;
+          content = data.content;
+          return [
+            4 /*yield*/,
+            typeorm_1
+              .getRepository(User_1.User)
+              .createQueryBuilder('User')
+              .leftJoinAndSelect('User.profilePicture', 'photo')
+              .useTransaction(true)
+              .where('User.id = :id', {id: userId})
+              .getOne(),
+          ];
+        case 1:
+          databaseImage = _b.sent();
+          if (!(databaseImage.profilePicture == null)) return [3 /*break*/, 5];
+          newProfileIamge = new Profilepicture_1.Profilepicture();
+          _a = newProfileIamge;
+          return [
+            4 /*yield*/,
+            typeorm_1
+              .getRepository(User_1.User)
+              .createQueryBuilder('user')
+              .select()
+              .where('id = :id', {id: userId})
+              .getOne(),
+          ];
+        case 2:
+          _a.user = _b.sent();
+          newProfileIamge.content = data.content;
+          return [
+            4 /*yield*/,
+            typeorm_1
+              .getRepository(Profilepicture_1.Profilepicture)
+              .createQueryBuilder('Profilepicture')
+              .useTransaction(true)
+              .insert()
+              .into('Profilepicture')
+              .values({
+                content: content,
+                user: newProfileIamge.user.id,
+              })
+              .execute(),
+          ];
+        case 3:
+          insertedImage = _b.sent();
+          console.log(insertedImage);
+          return [
+            4 /*yield*/,
+            typeorm_2
+              .getConnection()
+              .createQueryBuilder()
+              .update(User_1.User)
+              .set({
+                profilePicture: insertedImage.raw[0],
+              })
+              .where('id = :id', {id: userId})
+              .execute(),
+          ];
+        case 4:
+          _b.sent();
+          response.status(200).json({message: 'we did a new one'});
+          return [3 /*break*/, 7];
+        case 5:
+          console.log(databaseImage);
+          return [
+            4 /*yield*/,
+            typeorm_2
+              .getConnection()
+              .createQueryBuilder()
+              .update(Profilepicture_1.Profilepicture)
+              .set({
+                content: data.content,
+              })
+              .where('id = :id', {id: databaseImage.profilePicture.id}),
+          ];
+        case 6:
+          blah = _b.sent();
+          response.status(200).json({message: 'CHANGE!!!'});
+          _b.label = 7;
+        case 7:
+          return [2 /*return*/];
+      }
     });
   });
 }

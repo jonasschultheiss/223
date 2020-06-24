@@ -152,8 +152,7 @@ function userTest(request, response) {
           ];
         case 1:
           databaseImage = _b.sent();
-          console.log(databaseImage);
-          if (!(databaseImage.profilePicture === null)) return [3 /*break*/, 5];
+          if (!(databaseImage.profilePicture == null)) return [3 /*break*/, 5];
           newProfileIamge = new Profilepicture_1.Profilepicture();
           _a = newProfileIamge;
           return [
@@ -184,6 +183,7 @@ function userTest(request, response) {
           ];
         case 3:
           insertedImage = _b.sent();
+          console.log(insertedImage);
           return [
             4 /*yield*/,
             typeorm_1
@@ -191,9 +191,10 @@ function userTest(request, response) {
               .createQueryBuilder()
               .update(User_1.User)
               .set({
-                profilePicture: insertedImage.identifiers[0].id,
+                profilePicture: insertedImage.raw[0],
               })
-              .where('id = :id', {id: userId}),
+              .where('id = :id', {id: userId})
+              .execute(),
           ];
         case 4:
           _b.sent();
