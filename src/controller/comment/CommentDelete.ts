@@ -22,7 +22,7 @@ export async function commentDelete(request: Request, response: Response) {
         })
         .execute();
 
-      response.status(200).json({message: 'comment successfully deleted'});
+      response.status(200).json({message: 'Comment successfully deleted'});
     }
   } else {
     response.status(401).json({message: 'no auth token in header'});

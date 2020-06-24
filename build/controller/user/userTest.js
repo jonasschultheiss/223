@@ -129,102 +129,29 @@ var __generator =
   };
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
-var User_1 = require('../../entity/User');
 require('dotenv');
-var Profilepicture_1 = require('../../entity/Profilepicture');
+var Comment_1 = require('../../entity/Comment');
 function userTest(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var data, userId, content, connection, queryRunner, imageToUpdate, err_1;
+    var postId, connection, comments;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          data = request.body;
-          userId = data.userId;
-          content = data.text;
+          postId = 1;
           connection = typeorm_1.getConnection();
-          queryRunner = connection.createQueryRunner();
-          // establish real database connection using our new query runner
-          return [4 /*yield*/, queryRunner.connect()];
+          return [
+            4 /*yield*/,
+            connection
+              .getRepository(Comment_1.Comment)
+              .createQueryBuilder('comment')
+              .leftJoinAndSelect('comment.user', 'user')
+              .where('comment.image=:id', {id: postId})
+              //can't setLock Optimistic with get Many
+              .getMany(),
+          ];
         case 1:
-          // establish real database connection using our new query runner
-          _a.sent();
-          // lets now open a new transaction:
-          return [4 /*yield*/, queryRunner.startTransaction()];
-        case 2:
-          // lets now open a new transaction:
-          _a.sent();
-          return [
-            4 /*yield*/,
-            queryRunner.manager
-              .getRepository(User_1.User)
-              .createQueryBuilder('user')
-              .leftJoinAndSelect('user.profilePicture', 'photo')
-              .useTransaction(true)
-              .where('user.id = :id', {id: userId})
-              .getOne(),
-          ];
-        case 3:
-          imageToUpdate = _a.sent();
-          _a.label = 4;
-        case 4:
-          _a.trys.push([4, 11, 13, 15]);
-          if (!imageToUpdate.profilePicture) return [3 /*break*/, 6];
-          imageToUpdate.profilePicture.content = content;
-          return [
-            4 /*yield*/,
-            queryRunner.manager.update(
-              Profilepicture_1.Profilepicture,
-              {id: imageToUpdate.profilePicture.id},
-              imageToUpdate.profilePicture
-            ),
-          ];
-        case 5:
-          _a.sent();
-          return [3 /*break*/, 9];
-        case 6:
-          imageToUpdate.profilePicture = new Profilepicture_1.Profilepicture();
-          imageToUpdate.profilePicture.content = content;
-          return [
-            4 /*yield*/,
-            queryRunner.manager.save(
-              Profilepicture_1.Profilepicture,
-              imageToUpdate.profilePicture
-            ),
-          ];
-        case 7:
-          _a.sent();
-          return [
-            4 /*yield*/,
-            queryRunner.manager.save(User_1.User, imageToUpdate),
-          ];
-        case 8:
-          _a.sent();
-          _a.label = 9;
-        case 9:
-          // commit transaction now:
-          return [4 /*yield*/, queryRunner.commitTransaction()];
-        case 10:
-          // commit transaction now:
-          _a.sent();
-          response.status(200).json();
-          return [3 /*break*/, 15];
-        case 11:
-          err_1 = _a.sent();
-          // since we have errors let's rollback changes we made
-          return [4 /*yield*/, queryRunner.rollbackTransaction()];
-        case 12:
-          // since we have errors let's rollback changes we made
-          _a.sent();
-          response.status(400).json(err_1);
-          return [3 /*break*/, 15];
-        case 13:
-          // you need to release query runner which is manually created:
-          return [4 /*yield*/, queryRunner.release()];
-        case 14:
-          // you need to release query runner which is manually created:
-          _a.sent();
-          return [7 /*endfinally*/];
-        case 15:
+          comments = _a.sent();
+          response.status(200).json(comments);
           return [2 /*return*/];
       }
     });

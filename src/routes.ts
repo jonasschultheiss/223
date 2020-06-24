@@ -114,7 +114,7 @@ export const AppRoutes = [
     action: imageGetFromUser,
   },
   {
-    path: '/image/id',
+    path: '/image/:id',
     method: 'delete',
     action: imageDelete,
   },

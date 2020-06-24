@@ -4,9 +4,8 @@ import {Image} from '../../entity/Image';
 
 export async function imageGetFromUser(request: Request, response: Response) {
   const connection = await getConnection();
-  const queryRunner = await connection.createQueryRunner();
-  const userId = request.params.userId;
 
+  const userId = request.params.userId;
 
   const image = await connection
     .getRepository(Image)

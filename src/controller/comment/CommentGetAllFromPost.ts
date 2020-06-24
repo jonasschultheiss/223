@@ -1,11 +1,15 @@
 import {Request, Response} from 'express';
-import {getManager, getRepository} from 'typeorm';
+import {getConnection, getManager, getRepository} from 'typeorm';
 import {Comment} from '../../entity/Comment';
+import {User} from "../../entity/User";
 
 export async function commentGetAllFromPost(request: Request, response: Response) {
   const postId = request.params.id
-  const comments = await getRepository(Comment)
+  const connection = getConnection()
+  const comments = await connection
+    .getRepository(Comment)
     .createQueryBuilder('comment')
+    .leftJoinAndSelect("comment.user", "user")
     .where(
       "comment.image=:id", {id: postId}
     )

@@ -22,7 +22,7 @@ export async function commentCreateNew(request: Request, response: Response) {
       .values({text: data.text, user: sentData.userId, image: data.imageId})
       .execute();
 
-    response.status(203).json({test: 'test'});
+    response.status(203).json({message: 'Comment created'});
   } else {
     response.status(401).json({message: 'no auth token in header'});
   }

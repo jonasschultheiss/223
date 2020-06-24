@@ -159,7 +159,7 @@ function commentCreateNew(request, response) {
           ];
         case 1:
           _a.sent();
-          response.status(203).json({test: 'test'});
+          response.status(203).json({message: 'Comment created'});
           return [3 /*break*/, 3];
         case 2:
           response.status(401).json({message: 'no auth token in header'});

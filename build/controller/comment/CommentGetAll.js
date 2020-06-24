@@ -146,7 +146,7 @@ function commentGetAll(request, response) {
           ];
         case 1:
           comments = _a.sent();
-          response.set(comments).status(200);
+          response.status(200).json(comments);
           return [2 /*return*/];
       }
     });

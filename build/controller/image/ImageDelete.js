@@ -151,9 +151,8 @@ function imageDelete(request, response) {
               .createQueryBuilder()
               .delete()
               .from(Image_1.Image)
-              .where('user = :id')
+              .where('user = :id', {id: sentData.userId})
               .andWhere('image = :imageId', {
-                id: sentData.userId,
                 imageId: request.body.imageId,
               })
               .execute(),

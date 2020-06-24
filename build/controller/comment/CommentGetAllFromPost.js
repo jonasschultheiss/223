@@ -132,16 +132,18 @@ var typeorm_1 = require('typeorm');
 var Comment_1 = require('../../entity/Comment');
 function commentGetAllFromPost(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var postId, comments;
+    var postId, connection, comments;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
           postId = request.params.id;
+          connection = typeorm_1.getConnection();
           return [
             4 /*yield*/,
-            typeorm_1
+            connection
               .getRepository(Comment_1.Comment)
               .createQueryBuilder('comment')
+              .leftJoinAndSelect('comment.user', 'user')
               .where('comment.image=:id', {id: postId})
               //can't setLock Optimistic with get Many
               .getMany(),

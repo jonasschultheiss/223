@@ -8,5 +8,5 @@ export async function commentGetAll(request: Request, response: Response) {
     .createQueryBuilder('comment')
     //can't setLock Optimistic with get Many
     .getMany();
-  response.set(comments).status(200);
+  response.status(200).json(comments);
 }

@@ -62,3 +62,7 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:3000/comment/post/1
+
+###
+

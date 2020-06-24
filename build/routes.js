@@ -110,7 +110,7 @@ exports.AppRoutes = [
     action: ImageGetFromUser_1.imageGetFromUser,
   },
   {
-    path: '/image/id',
+    path: '/image/:id',
     method: 'delete',
     action: ImageDelete_1.imageDelete,
   },

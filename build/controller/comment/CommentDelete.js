@@ -159,7 +159,7 @@ function commentDelete(request, response) {
           ];
         case 1:
           _a.sent();
-          response.status(200).json({message: 'comment successfully deleted'});
+          response.status(200).json({message: 'Comment successfully deleted'});
           _a.label = 2;
         case 2:
           return [3 /*break*/, 4];

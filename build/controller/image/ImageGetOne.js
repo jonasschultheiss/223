@@ -132,12 +132,11 @@ var typeorm_1 = require('typeorm');
 var Image_1 = require('../../entity/Image');
 function imageGetOne(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var connection, queryRunner, imageId, image;
+    var connection, imageId, image;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
           connection = typeorm_1.getConnection();
-          queryRunner = connection.createQueryRunner();
           imageId = request.params.id;
           return [
             4 /*yield*/,

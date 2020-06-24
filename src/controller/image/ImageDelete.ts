@@ -15,9 +15,8 @@ export async function imageDelete(request: Request, response: Response) {
         .createQueryBuilder()
         .delete()
         .from(Image)
-        .where('user = :id')
+        .where('user = :id', {id: sentData.userId})
         .andWhere('image = :imageId', {
-          id: sentData.userId,
           imageId: request.body.imageId,
         })
         .execute();
