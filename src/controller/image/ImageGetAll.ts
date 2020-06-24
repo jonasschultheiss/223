@@ -4,8 +4,8 @@ import {Image} from '../../entity/Image';
 
 export async function imageGetAll(request: Request, response: Response) {
 
-  const page = request.query.page || 1
-  const skip = (request.query.page === "1" ) ? 0 :Number(page) * 10
+  const page = Number(request.query.page) || 1
+  const skip = (page === 1) ? 0 : Number(page-1) * 10
 
   const images = await createQueryBuilder("Image")
     .leftJoinAndSelect("Image.user", "user")

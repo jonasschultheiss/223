@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
-import {getConnection, getManager, getRepository} from 'typeorm';
+import {getConnection} from 'typeorm';
 import {Comment} from '../../entity/Comment';
-import {User} from "../../entity/User";
+
 
 export async function commentGetAllFromPost(request: Request, response: Response) {
   const postId = request.params.id

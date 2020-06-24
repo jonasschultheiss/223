@@ -10,16 +10,16 @@ import {Image} from "../../entity/Image";
 import {Comment} from "../../entity/Comment";
 
 export async function userTest(request: Request, response: Response) {
-  const postId = 1
-  const connection = getConnection()
-  const comments = await connection
-    .getRepository(Comment)
-    .createQueryBuilder('comment')
-    .leftJoinAndSelect("comment.user", "user")
-    .where(
-      "comment.image=:id", {id: postId}
-    )
-    //can't setLock Optimistic with get Many
+  const page = Number(request.query.page) || 1
+  const skip = (page === 1) ? 0 : Number(page-1) * 10
+
+  const images = await createQueryBuilder("Image")
+    .leftJoinAndSelect("Image.user", "user")
+    .leftJoinAndSelect("Image.like", "like")
+    .offset(skip)
+    .limit(10)
+    .orderBy("Image.updateDate" , "DESC")
     .getMany();
-  response.status(200).json(comments);
+
+  response.status(200).json(images);
 }
