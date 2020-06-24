@@ -174,7 +174,7 @@ function userTest(request, response) {
             4 /*yield*/,
             queryRunner.manager.update(
               Profilepicture_1.Profilepicture,
-              {id: imageToUpdate.profilePicture.id, lock: 'optimistic'},
+              {id: imageToUpdate.profilePicture.id},
               imageToUpdate.profilePicture
             ),
           ];

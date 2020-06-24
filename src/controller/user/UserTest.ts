@@ -41,7 +41,7 @@ export async function userTest(request: Request, response: Response) {
     if (imageToUpdate.profilePicture)
     {
       imageToUpdate.profilePicture.content = content
-      await queryRunner.manager.update(Profilepicture,{id: imageToUpdate.profilePicture.id, lock: 'optimistic'}, imageToUpdate.profilePicture);
+      await queryRunner.manager.update(Profilepicture,{id: imageToUpdate.profilePicture.id}, imageToUpdate.profilePicture);
     }else{
       imageToUpdate.profilePicture = new Profilepicture()
       imageToUpdate.profilePicture.content = content

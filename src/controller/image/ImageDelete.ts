@@ -9,7 +9,7 @@ export async function imageDelete(request: Request, response: Response) {
     const token = JSON.parse(authHeader).split(' ')[1];
 
     const sentData = jwt.decode(token);
-    if ((sentData.userId = request.body.userId)) {
+    if ((sentData.userId === request.body.userId)) {
       const data = request.body;
       await getConnection()
         .createQueryBuilder()

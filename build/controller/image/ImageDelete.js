@@ -141,7 +141,8 @@ function imageDelete(request, response) {
           authHeader = request.headers.authorization;
           token = JSON.parse(authHeader).split(' ')[1];
           sentData = jwt.decode(token);
-          if (!(sentData.userId = request.body.userId)) return [3 /*break*/, 2];
+          if (!(sentData.userId === request.body.userId))
+            return [3 /*break*/, 2];
           data = request.body;
           return [
             4 /*yield*/,
