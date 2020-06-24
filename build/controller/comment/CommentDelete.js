@@ -133,16 +133,15 @@ var Comment_1 = require('../../entity/Comment');
 var jwt = require('jsonwebtoken');
 function commentDelete(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var authHeader, token, sentData, data;
+    var authHeader, token, sentData;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
           if (!request.headers.authorization) return [3 /*break*/, 3];
           authHeader = request.headers.authorization;
-          token = JSON.parse(authHeader).split(' ')[1];
+          token = authHeader.split(' ')[1];
           sentData = jwt.decode(token);
           if (!(sentData.userId = request.body.userId)) return [3 /*break*/, 2];
-          data = request.body;
           return [
             4 /*yield*/,
             typeorm_1
@@ -150,10 +149,8 @@ function commentDelete(request, response) {
               .createQueryBuilder()
               .delete()
               .from(Comment_1.Comment)
-              .where('user = :id', {id: sentData.userId})
-              .andWhere('comment = :commentId', {
-                commentId: request.body.commentId,
-              })
+              .where('id = :commentId', {commentId: request.body.commentId})
+              .andWhere('user = :id', {id: sentData.userId})
               .execute(),
           ];
         case 1:
