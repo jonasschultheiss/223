@@ -13,8 +13,10 @@ POST http://localhost:3000/test
 Content-Type: application/json
 
 {
-  "userId": "17",
-  "roleId": "2"
+  "jwt": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI4LCJ1c2VybmFtZSI6InhlN3ppdWoiLCJyb2xlIjoiVXNlciIsInByb2ZpbGVQaWN0dXJlIjpbXX0.pKiavnvOu4jLYKRIyuUbSXUh_PfXil4Bj1icu77YFnQ",
+  "text": "data.text",
+  "userId": 1,
+  "imageId": 1
 }
 
 ###

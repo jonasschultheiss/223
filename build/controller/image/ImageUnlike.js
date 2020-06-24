@@ -156,8 +156,8 @@ function imageUnlike(request, response) {
           return [
             4 /*yield*/,
             queryRunner.manager.delete(Like_1.Like, {
-              where: {image: data.imageId},
-              and: {user: data.userId},
+              'id = :id': {id: data.imageId},
+              'user = :userId': {userId: data.userId},
             }),
           ];
         case 4:

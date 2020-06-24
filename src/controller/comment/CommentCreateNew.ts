@@ -14,7 +14,7 @@ export async function commentCreateNew(request: Request, response: Response) {
 
     const token = authHeader.split(' ')[1];
     const sentData = jwt.decode(token);
-    console.log(sentData);
+
     await getManager()
       .createQueryBuilder()
       .insert()

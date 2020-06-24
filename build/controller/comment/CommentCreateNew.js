@@ -143,7 +143,6 @@ function commentCreateNew(request, response) {
           authHeader = request.headers.authorization;
           token = authHeader.split(' ')[1];
           sentData = jwt.decode(token);
-          console.log(sentData);
           return [
             4 /*yield*/,
             typeorm_1

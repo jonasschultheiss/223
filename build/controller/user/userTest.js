@@ -129,35 +129,94 @@ var __generator =
   };
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
+var User_1 = require('../../entity/User');
 require('dotenv');
-var Image_1 = require('../../entity/Image');
+var Profilepicture_1 = require('../../entity/Profilepicture');
 function userTest(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var data, page, skip, test;
-    return __generator(this, function (_a) {
-      switch (_a.label) {
+    var data, userId, databaseImage, newProfileIamge, _a, insertedImage, blah;
+    return __generator(this, function (_b) {
+      switch (_b.label) {
         case 0:
           data = request.body;
-          page = request.query.page || 1;
-          skip = request.query.page === '1' ? 0 : Number(page) * 10;
+          userId = 16;
           return [
             4 /*yield*/,
             typeorm_1
-              .getManager()
-              .createQueryBuilder()
-              .setLock('optimistic', 1)
+              .getRepository(User_1.User)
+              .createQueryBuilder('User')
+              .leftJoinAndSelect('User.profilePicture', 'photo')
+              .useTransaction(true)
+              .where('User.id = :id', {id: userId})
+              .getOne(),
+          ];
+        case 1:
+          databaseImage = _b.sent();
+          console.log(databaseImage);
+          if (!(databaseImage.profilePicture === null)) return [3 /*break*/, 5];
+          newProfileIamge = new Profilepicture_1.Profilepicture();
+          _a = newProfileIamge;
+          return [
+            4 /*yield*/,
+            typeorm_1
+              .getRepository(User_1.User)
+              .createQueryBuilder('user')
+              .select()
+              .where('id = :id', {id: userId})
+              .getOne(),
+          ];
+        case 2:
+          _a.user = _b.sent();
+          newProfileIamge.content = data.content;
+          return [
+            4 /*yield*/,
+            typeorm_1
+              .getRepository(Profilepicture_1.Profilepicture)
+              .createQueryBuilder('Profilepicture')
+              .useTransaction(true)
               .insert()
-              .into(Image_1.Image)
+              .into('Profilepicture')
               .values({
-                title: 'data.text',
-                content: 'data.imageText',
-                user: data.userId,
+                content: 'data.content',
+                user: newProfileIamge.user.id,
               })
               .execute(),
           ];
-        case 1:
-          test = _a.sent();
-          response.status(200).json(test.identifiers[0].id);
+        case 3:
+          insertedImage = _b.sent();
+          return [
+            4 /*yield*/,
+            typeorm_1
+              .getConnection()
+              .createQueryBuilder()
+              .update(User_1.User)
+              .set({
+                profilePicture: insertedImage.identifiers[0].id,
+              })
+              .where('id = :id', {id: userId}),
+          ];
+        case 4:
+          _b.sent();
+          response.status(200).json({message: 'we did a new one'});
+          return [3 /*break*/, 7];
+        case 5:
+          console.log(databaseImage);
+          return [
+            4 /*yield*/,
+            typeorm_1
+              .getConnection()
+              .createQueryBuilder()
+              .update(Profilepicture_1.Profilepicture)
+              .set({
+                content: data.content,
+              })
+              .where('id = :id', {id: databaseImage.profilePicture.id}),
+          ];
+        case 6:
+          blah = _b.sent();
+          response.status(200).json({message: 'CHANGE!!!'});
+          _b.label = 7;
+        case 7:
           return [2 /*return*/];
       }
     });

@@ -20,7 +20,7 @@ export async function imageUnlike(request: Request, response: Response) {
   try {
 
     // execute some operations on this transaction:
-    await queryRunner.manager.delete(Like, {where: {image: data.imageId}, and: {user: data.userId}});
+    await queryRunner.manager.delete(Like, {"id = :id": {id: data.imageId}, "user = :userId": {userId: data.userId}});
 
     // commit transaction now:
     await queryRunner.commitTransaction();
