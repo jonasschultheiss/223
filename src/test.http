@@ -2,7 +2,7 @@ POST http://localhost:3000/user
 Content-Type: application/json
 
 {
-  "username": "xxxxxxxxxxxxxxxxxxxxx",
+  "username": "lalalallalalalalal",
   "password": "testPassw0rd"
 }
 
@@ -14,8 +14,8 @@ Content-Type: application/json
 
 {
   "jwt": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI4LCJ1c2VybmFtZSI6InhlN3ppdWoiLCJyb2xlIjoiVXNlciIsInByb2ZpbGVQaWN0dXJlIjpbXX0.pKiavnvOu4jLYKRIyuUbSXUh_PfXil4Bj1icu77YFnQ",
-  "text": "data.text",
-  "userId": 1,
+  "text": "der huhrensohn",
+  "userId": 22,
   "imageId": 1
 }
 
@@ -32,7 +32,7 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "username": "xxxxxxxxxxxxxxxxxxxxx",
+  "username": "lalalallalalalalal",
   "password": "testPassw0rd"
 }
 

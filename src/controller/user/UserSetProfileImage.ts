@@ -11,59 +11,55 @@ export async function userSetProfileImage(
 
   const data = request.body;
   const userId = data.userId
-  const content = data.content
+  const content = data.text
 
 
-  const databaseImage = await getRepository(User)
-    .createQueryBuilder("User")
-    .leftJoinAndSelect("User.profilePicture", "photo")
+
+// get a connection and create a new query runner
+  const connection = getConnection();
+  const queryRunner = connection.createQueryRunner();
+
+// establish real database connection using our new query runner
+  await queryRunner.connect();
+
+// lets now open a new transaction:
+  await queryRunner.startTransaction();
+  const imageToUpdate = await queryRunner.manager
+    .getRepository(User)
+    .createQueryBuilder("user")
+    .leftJoinAndSelect("user.profilePicture", "photo")
     .useTransaction(true)
-    .where("User.id = :id", { id: userId })
+    .where("user.id = :id", { id: userId })
     .getOne()
 
 
-  if(databaseImage == null){
-    const newProfileIamge = new Profilepicture()
-    newProfileIamge.user = await getRepository(User)
-      .createQueryBuilder("user")
-      .select()
-      .where("id = :id", {id: userId})
-      .getOne()
-    newProfileIamge.content = data.content
+  try {
 
-    const insertedImage = await getRepository(Profilepicture)
-      .createQueryBuilder('Profilepicture')
-      .useTransaction(true)
-      .setLock('optimistic', 1)
-      .insert()
-      .into('Profilepicture')
-      .values({
-        content: content,
-        user: newProfileIamge.user.id
-      })
-      .execute()
+    // execute some operations on this transaction:
 
-    await getConnection()
-      .createQueryBuilder()
-      .setLock('optimistic', 1)
-      .update(User)
-      .set({
-        profilePicture: insertedImage.raw[0]
-      })
-      .where("id = :id", {id: userId})
-      .execute()
+    if (imageToUpdate.profilePicture)
+    {
+      imageToUpdate.profilePicture.content = content
+      await queryRunner.manager.update(Profilepicture,{id: imageToUpdate.profilePicture.id, lock: 'optimistic'}, imageToUpdate.profilePicture);
+    }else{
+      imageToUpdate.profilePicture = new Profilepicture()
+      imageToUpdate.profilePicture.content = content
+      await queryRunner.manager.save(Profilepicture, imageToUpdate.profilePicture);
+      await queryRunner.manager.save(User, imageToUpdate);
+    }
 
-    response.status(200).json({message:"we did a new one"})
-  }else{
-    console.log("insertedImage")
-    const blah = await getConnection()
-      .createQueryBuilder()
-      .update(Profilepicture)
-      .set({
-        content: data.content
-      })
-      .where("id = :id", {id: databaseImage.profilePicture.id})
-    response.status(200).json({message: "CHANGE!!!"});
+    // commit transaction now:
+    await queryRunner.commitTransaction();
+    response.status(200).json()
+  } catch (err) {
+
+    // since we have errors let's rollback changes we made
+    await queryRunner.rollbackTransaction();
+    response.status(400).json(err)
+  } finally {
+
+    // you need to release query runner which is manually created:
+    await queryRunner.release();
   }
 
 }
