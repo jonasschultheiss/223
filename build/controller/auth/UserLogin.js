@@ -141,7 +141,6 @@ function userLogin(request, response) {
       queryRunner,
       databaseUser,
       userData,
-      userProfile,
       payload,
       token_secret,
       token;
@@ -169,7 +168,7 @@ function userLogin(request, response) {
         case 2:
           databaseUser = _a.sent();
           if (!bcrypt.compare(clearPassword, databaseUser.password))
-            return [3 /*break*/, 5];
+            return [3 /*break*/, 4];
           return [
             4 /*yield*/,
             connection
@@ -181,24 +180,10 @@ function userLogin(request, response) {
           ];
         case 3:
           userData = _a.sent();
-          return [
-            4 /*yield*/,
-            connection
-              .getRepository(User_1.User)
-              .createQueryBuilder('user')
-              .leftJoinAndSelect('user.profilePicture', 'image')
-              .where('user.id = :id', {id: userData.id})
-              .getOne(),
-          ];
-        case 4:
-          userProfile = _a.sent();
           payload = {
             userId: userData.id,
             username: userData.username,
             role: userData.role.name,
-            profilePicture: userProfile.profilePicture
-              ? userProfile.profilePicture.content
-              : [],
           };
           token_secret = process.env.JWT_SECRET || 'abcdefghijklmnopqrstuvwxyz';
           token = jwt.sign(JSON.stringify(payload), token_secret);
@@ -209,13 +194,13 @@ function userLogin(request, response) {
               message: 'Login success',
               access_token: token,
             });
-          return [3 /*break*/, 6];
-        case 5:
+          return [3 /*break*/, 5];
+        case 4:
           response.status(200).json({success: false, message: 'Login failed'});
-          _a.label = 6;
-        case 6:
+          _a.label = 5;
+        case 5:
           return [4 /*yield*/, queryRunner.release()];
-        case 7:
+        case 6:
           _a.sent();
           return [2 /*return*/];
       }

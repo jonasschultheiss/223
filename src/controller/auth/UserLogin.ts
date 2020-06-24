@@ -33,19 +33,12 @@ export async function userLogin(request: Request, response: Response) {
         .leftJoinAndSelect("user.role", "role")
         .where("username = :name", {name: sentUser})
         .getOne()
-    const userProfile = await connection
-      .getRepository(User)
-      .createQueryBuilder("user")
-      .leftJoinAndSelect("user.profilePicture", "image")
-      .where("user.id = :id", {id: userData.id})
-      .getOne();
 
 
     const payload = {
       userId: userData.id,
       username: userData.username,
-      role: userData.role.name,
-      profilePicture: userProfile.profilePicture ? userProfile.profilePicture.content : []
+      role: userData.role.name
     }
 
     const token_secret = process.env.JWT_SECRET || "abcdefghijklmnopqrstuvwxyz"

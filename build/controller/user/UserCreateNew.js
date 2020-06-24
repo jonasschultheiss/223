@@ -234,7 +234,6 @@ function userCreateNew(request, response) {
             userId: createdUser.id,
             username: createdUser.username,
             role: createdUser.role.name,
-            profilePicture: [],
           };
           token_secret = process.env.JWT_SECRET || 'abcdefghijklmnopqrstuvwxyz';
           token = jwt.sign(JSON.stringify(payload), token_secret);

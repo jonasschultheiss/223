@@ -156,8 +156,8 @@ function imageUnlike(request, response) {
           return [
             4 /*yield*/,
             queryRunner.manager.delete(Like_1.Like, {
-              'id = :id': {id: data.imageId},
-              'user = :userId': {userId: data.userId},
+              image: data.imageId,
+              user: data.userId,
             }),
           ];
         case 4:
@@ -172,6 +172,7 @@ function imageUnlike(request, response) {
           return [3 /*break*/, 10];
         case 6:
           err_1 = _a.sent();
+          console.log('imageUnlike -> err', err_1);
           // since we have errors let's rollback changes we made
           return [4 /*yield*/, queryRunner.rollbackTransaction()];
         case 7:

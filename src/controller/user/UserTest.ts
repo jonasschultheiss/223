@@ -11,7 +11,7 @@ import {Comment} from "../../entity/Comment";
 
 export async function userTest(request: Request, response: Response) {
   const data = request.body;
-  const userId = 16
+  const userId = 21
 
 
 
@@ -22,7 +22,7 @@ export async function userTest(request: Request, response: Response) {
     .where("User.id = :id", { id: userId })
     .getOne()
 
-
+  console.log(databaseImage)
   if(databaseImage.profilePicture == null){
     const newProfileIamge = new Profilepicture()
     newProfileIamge.user = await getRepository(User)
@@ -38,11 +38,11 @@ export async function userTest(request: Request, response: Response) {
       .insert()
       .into('Profilepicture')
       .values({
-        content: "data.content",
+        content: "huere figg scheisse",
         user: newProfileIamge.user.id
       })
       .execute()
-    console.log(insertedImage)
+
     await getConnection()
       .createQueryBuilder()
       .update(User)
@@ -54,14 +54,16 @@ export async function userTest(request: Request, response: Response) {
 
     response.status(200).json({message:"we did a new one"})
   }else{
-    console.log(databaseImage)
+
     const blah = await getConnection()
       .createQueryBuilder()
       .update(Profilepicture)
       .set({
-        content: data.content
+        content: "data.content"
       })
       .where("id = :id", {id: databaseImage.profilePicture.id})
+      .execute()
+
     response.status(200).json({message: "CHANGE!!!"});
   }
 

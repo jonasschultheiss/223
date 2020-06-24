@@ -60,8 +60,7 @@ export async function userCreateNew(request: Request, response: Response) {
     const payload = {
       userId: createdUser.id,
       username: createdUser.username,
-      role: createdUser.role.name,
-      profilePicture: [],
+      role: createdUser.role.name
     };
 
     const token_secret = process.env.JWT_SECRET || 'abcdefghijklmnopqrstuvwxyz';

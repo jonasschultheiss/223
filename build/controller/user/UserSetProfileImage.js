@@ -160,7 +160,7 @@ function userSetProfileImage(request, response) {
           ];
         case 1:
           databaseImage = _b.sent();
-          if (!(databaseImage.profilePicture == null)) return [3 /*break*/, 5];
+          if (!(databaseImage == null)) return [3 /*break*/, 5];
           newProfileIamge = new Profilepicture_1.Profilepicture();
           _a = newProfileIamge;
           return [
@@ -181,6 +181,7 @@ function userSetProfileImage(request, response) {
               .getRepository(Profilepicture_1.Profilepicture)
               .createQueryBuilder('Profilepicture')
               .useTransaction(true)
+              .setLock('optimistic', 1)
               .insert()
               .into('Profilepicture')
               .values({
@@ -191,12 +192,12 @@ function userSetProfileImage(request, response) {
           ];
         case 3:
           insertedImage = _b.sent();
-          console.log(insertedImage);
           return [
             4 /*yield*/,
             typeorm_2
               .getConnection()
               .createQueryBuilder()
+              .setLock('optimistic', 1)
               .update(User_1.User)
               .set({
                 profilePicture: insertedImage.raw[0],
@@ -209,7 +210,7 @@ function userSetProfileImage(request, response) {
           response.status(200).json({message: 'we did a new one'});
           return [3 /*break*/, 7];
         case 5:
-          console.log(databaseImage);
+          console.log('insertedImage');
           return [
             4 /*yield*/,
             typeorm_2

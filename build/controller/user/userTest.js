@@ -139,7 +139,7 @@ function userTest(request, response) {
       switch (_b.label) {
         case 0:
           data = request.body;
-          userId = 16;
+          userId = 21;
           return [
             4 /*yield*/,
             typeorm_1
@@ -152,6 +152,7 @@ function userTest(request, response) {
           ];
         case 1:
           databaseImage = _b.sent();
+          console.log(databaseImage);
           if (!(databaseImage.profilePicture == null)) return [3 /*break*/, 5];
           newProfileIamge = new Profilepicture_1.Profilepicture();
           _a = newProfileIamge;
@@ -176,14 +177,13 @@ function userTest(request, response) {
               .insert()
               .into('Profilepicture')
               .values({
-                content: 'data.content',
+                content: 'huere figg scheisse',
                 user: newProfileIamge.user.id,
               })
               .execute(),
           ];
         case 3:
           insertedImage = _b.sent();
-          console.log(insertedImage);
           return [
             4 /*yield*/,
             typeorm_1
@@ -201,7 +201,6 @@ function userTest(request, response) {
           response.status(200).json({message: 'we did a new one'});
           return [3 /*break*/, 7];
         case 5:
-          console.log(databaseImage);
           return [
             4 /*yield*/,
             typeorm_1
@@ -209,9 +208,10 @@ function userTest(request, response) {
               .createQueryBuilder()
               .update(Profilepicture_1.Profilepicture)
               .set({
-                content: data.content,
+                content: 'data.content',
               })
-              .where('id = :id', {id: databaseImage.profilePicture.id}),
+              .where('id = :id', {id: databaseImage.profilePicture.id})
+              .execute(),
           ];
         case 6:
           blah = _b.sent();

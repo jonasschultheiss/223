@@ -22,7 +22,7 @@ export async function userSetProfileImage(
     .getOne()
 
 
-  if(databaseImage.profilePicture == null){
+  if(databaseImage == null){
     const newProfileIamge = new Profilepicture()
     newProfileIamge.user = await getRepository(User)
       .createQueryBuilder("user")
@@ -34,6 +34,7 @@ export async function userSetProfileImage(
     const insertedImage = await getRepository(Profilepicture)
       .createQueryBuilder('Profilepicture')
       .useTransaction(true)
+      .setLock('optimistic', 1)
       .insert()
       .into('Profilepicture')
       .values({
@@ -41,9 +42,10 @@ export async function userSetProfileImage(
         user: newProfileIamge.user.id
       })
       .execute()
-    console.log(insertedImage)
+
     await getConnection()
       .createQueryBuilder()
+      .setLock('optimistic', 1)
       .update(User)
       .set({
         profilePicture: insertedImage.raw[0]
@@ -53,7 +55,7 @@ export async function userSetProfileImage(
 
     response.status(200).json({message:"we did a new one"})
   }else{
-    console.log(databaseImage)
+    console.log("insertedImage")
     const blah = await getConnection()
       .createQueryBuilder()
       .update(Profilepicture)
