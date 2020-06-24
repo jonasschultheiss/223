@@ -62,6 +62,9 @@ var Comment = /** @class */ (function () {
         },
         function (user) {
           return user.comments;
+        },
+        {
+          onDelete: 'CASCADE',
         }
       ),
       __metadata('design:type', User_1.User),
@@ -78,6 +81,9 @@ var Comment = /** @class */ (function () {
         },
         function (image) {
           return image.comment;
+        },
+        {
+          onDelete: 'CASCADE',
         }
       ),
       __metadata('design:type', Image_1.Image),

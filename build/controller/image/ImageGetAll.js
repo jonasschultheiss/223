@@ -135,8 +135,8 @@ function imageGetAll(request, response) {
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          page = request.query.page || 1;
-          skip = request.query.page === '1' ? 0 : Number(page) * 10;
+          page = Number(request.query.page) || 1;
+          skip = page === 1 ? 0 : Number(page - 1) * 10;
           return [
             4 /*yield*/,
             typeorm_1

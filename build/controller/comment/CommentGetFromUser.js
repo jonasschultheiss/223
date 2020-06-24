@@ -132,7 +132,7 @@ var typeorm_1 = require('typeorm');
 var Comment_1 = require('../../entity/Comment');
 function commentGetFromUser(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var connection, userId, comment;
+    var connection, userId, comments;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
@@ -145,13 +145,14 @@ function commentGetFromUser(request, response) {
             connection
               .getRepository(Comment_1.Comment)
               .createQueryBuilder('comment')
-              .select()
-              .where('comment.user = :id', {id: userId})
+              .leftJoinAndSelect('comment.user', 'user')
+              .where('comment.user=:id', {id: 17})
+              //can't setLock Optimistic with get Many
               .getMany(),
           ];
         case 2:
-          comment = _a.sent();
-          response.status(200).json(comment);
+          comments = _a.sent();
+          response.status(200).json(comments);
           return [2 /*return*/];
       }
     });

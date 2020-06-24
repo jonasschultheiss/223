@@ -44,6 +44,9 @@ var Like = /** @class */ (function () {
         },
         function (image) {
           return image.like;
+        },
+        {
+          onDelete: 'CASCADE',
         }
       ),
       __metadata('design:type', Image_1.Image),
@@ -60,6 +63,9 @@ var Like = /** @class */ (function () {
         },
         function (user) {
           return user.likes;
+        },
+        {
+          onDelete: 'CASCADE',
         }
       ),
       __metadata('design:type', User_1.User),

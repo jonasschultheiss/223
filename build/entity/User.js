@@ -71,6 +71,9 @@ var User = /** @class */ (function () {
         },
         function (profilePicture) {
           return profilePicture.user;
+        },
+        {
+          onDelete: 'CASCADE',
         }
       ),
       typeorm_1.JoinColumn(),
@@ -88,6 +91,9 @@ var User = /** @class */ (function () {
         },
         function (role) {
           return role.user;
+        },
+        {
+          onDelete: 'CASCADE',
         }
       ),
       __metadata('design:type', Role_1.Role),

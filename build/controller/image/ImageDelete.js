@@ -133,7 +133,7 @@ var Image_1 = require('../../entity/Image');
 var jwt = require('jsonwebtoken');
 function imageDelete(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var authHeader, token, sentData, data;
+    var authHeader, token, sentData;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
@@ -143,7 +143,6 @@ function imageDelete(request, response) {
           sentData = jwt.decode(token);
           if (!(sentData.userId === request.body.userId))
             return [3 /*break*/, 2];
-          data = request.body;
           return [
             4 /*yield*/,
             typeorm_1
@@ -151,10 +150,8 @@ function imageDelete(request, response) {
               .createQueryBuilder()
               .delete()
               .from(Image_1.Image)
-              .where('user = :id', {id: sentData.userId})
-              .andWhere('image = :imageId', {
-                imageId: request.body.imageId,
-              })
+              .where('id = :imageId', {imageId: sentData.userId})
+              .andWhere('user = :id', {id: request.body.imageId})
               .execute(),
           ];
         case 1:

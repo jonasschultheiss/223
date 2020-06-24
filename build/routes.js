@@ -30,8 +30,8 @@ exports.AppRoutes = [
     action: UserLogin_1.userLogin,
   },
   {
-    path: '/test',
-    method: 'post',
+    path: '/test/:id',
+    method: 'get',
     action: UserTest_1.userTest,
   },
   {

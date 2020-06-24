@@ -14,9 +14,13 @@ export class Like {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => Image, image => image.like)
+  @ManyToOne(type => Image, image => image.like, {
+    onDelete: "CASCADE"
+  })
   image: Image;
 
-  @ManyToOne(type => User, user => user.likes)
+  @ManyToOne(type => User, user => user.likes, {
+    onDelete: "CASCADE"
+  })
   user: User;
 }

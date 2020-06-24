@@ -28,7 +28,9 @@ export class Image {
   @Column('text')
   content: string;
 
-  @ManyToOne(type => User, user => user.images)
+  @ManyToOne(type => User, user => user.images, {
+    onDelete: "CASCADE"
+  })
   user: User;
 
   @OneToMany(type => Comment, comment => comment.image)

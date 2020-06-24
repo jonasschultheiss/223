@@ -10,17 +10,14 @@ export async function imageDelete(request: Request, response: Response) {
 
     const sentData = jwt.decode(token);
     if ((sentData.userId === request.body.userId)) {
-      const data = request.body;
+
       await getConnection()
         .createQueryBuilder()
         .delete()
         .from(Image)
-        .where('user = :id', {id: sentData.userId})
-        .andWhere('image = :imageId', {
-          imageId: request.body.imageId,
-        })
+        .where('id = :imageId', {imageId: sentData.userId})
+        .andWhere('user = :id', {id: request.body.imageId})
         .execute();
-
       response.status(200).json({message: 'image successfully deleted'});
     }
   } else {

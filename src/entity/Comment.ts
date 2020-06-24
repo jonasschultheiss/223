@@ -23,9 +23,13 @@ export class Comment {
   @Column()
   text: string;
 
-  @ManyToOne(type => User, user => user.comments)
+  @ManyToOne(type => User, user => user.comments, {
+    onDelete: "CASCADE"
+  })
   user: User;
 
-  @ManyToOne(type => Image, image => image.comment)
+  @ManyToOne(type => Image, image => image.comment, {
+    onDelete: "CASCADE"
+  })
   image: Image;
 }

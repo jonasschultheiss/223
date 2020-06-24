@@ -33,8 +33,8 @@ export const AppRoutes = [
     action: userLogin,
   },
   {
-    path: '/test',
-    method: 'post',
+    path: '/test/:id',
+    method: 'get',
     action: userTest,
   },
   {

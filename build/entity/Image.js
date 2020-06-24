@@ -69,6 +69,9 @@ var Image = /** @class */ (function () {
         },
         function (user) {
           return user.images;
+        },
+        {
+          onDelete: 'CASCADE',
         }
       ),
       __metadata('design:type', User_1.User),

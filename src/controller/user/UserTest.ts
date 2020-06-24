@@ -10,16 +10,20 @@ import {Image} from "../../entity/Image";
 import {Comment} from "../../entity/Comment";
 
 export async function userTest(request: Request, response: Response) {
-  const page = Number(request.query.page) || 1
-  const skip = (page === 1) ? 0 : Number(page-1) * 10
 
-  const images = await createQueryBuilder("Image")
-    .leftJoinAndSelect("Image.user", "user")
-    .leftJoinAndSelect("Image.like", "like")
-    .offset(skip)
-    .limit(10)
-    .orderBy("Image.updateDate" , "DESC")
+
+  const postId = request.params.id
+  const connection = getConnection()
+  const comments = await connection
+    .getRepository(Comment)
+    .createQueryBuilder('comment')
+    .leftJoinAndSelect("comment.user", "user")
+    .where(
+      "comment.user=:id", {id: 17}
+    )
+    //can't setLock Optimistic with get Many
     .getMany();
+  response.status(200).json(comments);
 
-  response.status(200).json(images);
+
 }

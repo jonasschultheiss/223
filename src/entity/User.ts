@@ -31,11 +31,15 @@ export class User {
   @Column()
   password: string;
 
-  @OneToOne(type => Profilepicture, profilePicture => profilePicture.user)
+  @OneToOne(type => Profilepicture, profilePicture => profilePicture.user, {
+    onDelete: "CASCADE"
+  })
   @JoinColumn()
   profilePicture: Profilepicture;
 
-  @ManyToOne(type => Role, role => role.user)
+  @ManyToOne(type => Role, role => role.user, {
+    onDelete: "CASCADE"
+  })
   role: Role;
 
   @OneToMany(type => Image, image => image.user)

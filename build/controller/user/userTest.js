@@ -130,28 +130,28 @@ var __generator =
 Object.defineProperty(exports, '__esModule', {value: true});
 var typeorm_1 = require('typeorm');
 require('dotenv');
+var Comment_1 = require('../../entity/Comment');
 function userTest(request, response) {
   return __awaiter(this, void 0, void 0, function () {
-    var page, skip, images;
+    var postId, connection, comments;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          page = Number(request.query.page) || 1;
-          skip = page === 1 ? 0 : Number(page - 1) * 10;
+          postId = request.params.id;
+          connection = typeorm_1.getConnection();
           return [
             4 /*yield*/,
-            typeorm_1
-              .createQueryBuilder('Image')
-              .leftJoinAndSelect('Image.user', 'user')
-              .leftJoinAndSelect('Image.like', 'like')
-              .offset(skip)
-              .limit(10)
-              .orderBy('Image.updateDate', 'DESC')
+            connection
+              .getRepository(Comment_1.Comment)
+              .createQueryBuilder('comment')
+              .leftJoinAndSelect('comment.user', 'user')
+              .where('comment.user=:id', {id: 17})
+              //can't setLock Optimistic with get Many
               .getMany(),
           ];
         case 1:
-          images = _a.sent();
-          response.status(200).json(images);
+          comments = _a.sent();
+          response.status(200).json(comments);
           return [2 /*return*/];
       }
     });
